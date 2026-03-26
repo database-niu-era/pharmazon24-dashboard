@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4167 4167" width="200" height="200">
+  <!-- Background -->
+  <rect width="4167" height="4167" fill="#ffffff"/>
+
+  <!-- "niu era" text in light beige/tan color -->
+  <text x="2083" y="2500" font-family="Segoe UI, sans-serif" font-size="900" font-weight="400" text-anchor="middle" fill="#d4c5b9" letter-spacing="80">niu era</text>
+
+  <!-- Optional: decorative underline -->
+  <line x1="800" y1="2750" x2="3367" y2="2750" stroke="#d4c5b9" stroke-width="60"/>
+</svg>
