@@ -1147,12 +1147,12 @@
         const trackingCats = ['bilder', 'infografiken', 'kurzeVideos', 'langeVideos', 'carousels'];
 
         for (const cat in categories) {
-            const cur = md[cat];
+            const cur = md[cat] || 0;
             const max = categories[cat].max;
             const autoExtra = Math.max(0, cur - max);
             const manualExtra = manualExtrasThisMonth[cat] || 0;
             const extra = autoExtra + manualExtra;
-            const pct = Math.min(100, Math.round((cur / max) * 100));
+            const pct = max === 0 ? 0 : Math.min(100, Math.round((cur / max) * 100));
 
             totalDone += cur;
             totalMax += max;
