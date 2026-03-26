@@ -482,46 +482,6 @@
             <span style="margin-left: 12px; font-size: 1.2rem; transition: transform 0.3s;" id="expandArrow">▼</span>
         </div>
         <div class="card-body" id="extraLeistungen" style="display: none;">
-            <div style="margin-bottom: 20px; padding: 12px; background: rgba(255, 87, 34, 0.05); border-radius: 8px;">
-                <p style="font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; color: var(--text);">Schnell hinzufügen:</p>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
-                        <span style="font-size: 0.8rem;">Zusatzbild (13€)</span>
-                        <div style="display: flex; gap: 4px;">
-                            <button class="btn btn-add" onclick="addManualExtra('bilder', 1)" style="padding: 4px 8px; font-size: 0.8rem;">+</button>
-                            <button class="btn btn-remove" onclick="addManualExtra('bilder', -1)" style="padding: 4px 8px; font-size: 0.8rem;">−</button>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
-                        <span style="font-size: 0.8rem;">Infografik (79€)</span>
-                        <div style="display: flex; gap: 4px;">
-                            <button class="btn btn-add" onclick="addManualExtra('infografiken', 1)" style="padding: 4px 8px; font-size: 0.8rem;">+</button>
-                            <button class="btn btn-remove" onclick="addManualExtra('infografiken', -1)" style="padding: 4px 8px; font-size: 0.8rem;">−</button>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
-                        <span style="font-size: 0.8rem;">Kurz-Video (74,99€)</span>
-                        <div style="display: flex; gap: 4px;">
-                            <button class="btn btn-add" onclick="addManualExtra('kurzeVideos', 1)" style="padding: 4px 8px; font-size: 0.8rem;">+</button>
-                            <button class="btn btn-remove" onclick="addManualExtra('kurzeVideos', -1)" style="padding: 4px 8px; font-size: 0.8rem;">−</button>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
-                        <span style="font-size: 0.8rem;">Lang-Video (149€)</span>
-                        <div style="display: flex; gap: 4px;">
-                            <button class="btn btn-add" onclick="addManualExtra('langeVideos', 1)" style="padding: 4px 8px; font-size: 0.8rem;">+</button>
-                            <button class="btn btn-remove" onclick="addManualExtra('langeVideos', -1)" style="padding: 4px 8px; font-size: 0.8rem;">−</button>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
-                        <span style="font-size: 0.8rem;">Carousel (89,99€)</span>
-                        <div style="display: flex; gap: 4px;">
-                            <button class="btn btn-add" onclick="addManualExtra('carousels', 1)" style="padding: 4px 8px; font-size: 0.8rem;">+</button>
-                            <button class="btn btn-remove" onclick="addManualExtra('carousels', -1)" style="padding: 4px 8px; font-size: 0.8rem;">−</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <p style="color: var(--text-light); text-align: center; padding: 16px 0;" id="noExtraServices">Keine Leistungen über dem vereinbarten Umfang</p>
             <div id="extraServicesList"></div>
         </div>
@@ -1235,14 +1195,14 @@
             extraServicesList.innerHTML = '';
         } else {
             noExtraServices.style.display = 'none';
-            let html = '<div style="display: grid; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 2px solid #e5e7eb;">';
+            let html = '<div style="display: grid; gap: 12px;">';
             for (const cat in extras) {
                 if (extras[cat] > 0) {
                     const cost = extras[cat] * categories[cat].price;
-                    html += '<div class="extra-row"><span style="font-weight: 500;">' + extras[cat] + 'x ' + categories[cat].name + ' <span style="color: var(--text-light); font-weight: 400;">(' + categories[cat].price + ' € / Stk.)</span></span><span class="extra-price">' + cost.toFixed(2) + ' €</span></div>';
+                    html += '<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f9f9f9; border-radius: 6px;"><div><span style="font-weight: 500;">' + extras[cat] + 'x ' + categories[cat].name + '</span><br/><span style="font-size: 0.85rem; color: var(--text-light);">(' + categories[cat].price + ' € / Stk.) = ' + cost.toFixed(2) + ' €</span></div><div style="display: flex; gap: 6px;"><button class="btn btn-add" onclick="addManualExtra(\'' + cat + '\', 1)" style="padding: 6px 10px; font-size: 0.9rem;">+</button><button class="btn btn-remove" onclick="addManualExtra(\'' + cat + '\', -1)" style="padding: 6px 10px; font-size: 0.9rem;">−</button></div></div>';
                 }
             }
-            html += '<div style="display: flex; justify-content: flex-end; padding-top: 10px; border-top: 2px solid #e5e7eb; margin-top: 6px;"><span style="font-weight: 700; font-size: 1rem; color: #FF5722;">Gesamt: ' + totalExtraCost.toFixed(2) + ' € netto</span></div>';
+            html += '<div style="display: flex; justify-content: flex-end; padding-top: 12px; border-top: 2px solid #e5e7eb; margin-top: 6px;"><span style="font-weight: 700; font-size: 1rem; color: #FF5722;">Gesamt: ' + totalExtraCost.toFixed(2) + ' € netto</span></div>';
             html += '</div>';
             extraServicesList.innerHTML = html;
         }
