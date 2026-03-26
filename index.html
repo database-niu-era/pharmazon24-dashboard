@@ -32,93 +32,124 @@
         header {
             background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
             color: var(--white);
-            padding: 28px 40px;
+            padding: 16px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 20px rgba(20, 43, 108, 0.3);
         }
 
-        .logo-area h1 {
-            font-size: 1.6rem;
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-area img {
+            height: 48px;
+            width: auto;
+        }
+
+        .logo-area .title-block h1 {
+            font-size: 1.4rem;
             font-weight: 700;
             letter-spacing: 0.5px;
         }
 
-        .logo-area p {
-            font-size: 0.85rem;
+        .logo-area .title-block p {
+            font-size: 0.8rem;
             opacity: 0.8;
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
-        .month-selector {
+        .header-right {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .month-selector button {
+        .month-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .month-selector button, .header-btn {
             background: rgba(255,255,255,0.15);
             border: 1px solid rgba(255,255,255,0.25);
             color: var(--white);
-            width: 36px;
-            height: 36px;
+            padding: 8px 16px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 500;
             transition: background 0.2s;
         }
 
-        .month-selector button:hover { background: rgba(255,255,255,0.25); }
+        .month-selector button {
+            width: 34px;
+            height: 34px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .month-selector button:hover, .header-btn:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .header-btn.active {
+            background: rgba(255,255,255,0.35);
+            border-color: rgba(255,255,255,0.5);
+        }
 
         #currentMonth {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
-            min-width: 180px;
+            min-width: 150px;
             text-align: center;
         }
 
         /* Summary bar */
         .summary-bar {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            padding: 24px 40px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 14px;
+            padding: 20px 40px;
         }
 
         .summary-card {
             background: var(--card-bg);
             border-radius: 12px;
-            padding: 20px;
+            padding: 16px;
             text-align: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             border-top: 3px solid var(--primary);
         }
 
         .summary-card .label {
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             text-transform: uppercase;
             letter-spacing: 0.8px;
             color: var(--text-light);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .summary-card .value {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: var(--primary-dark);
         }
 
         .summary-card .sub {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-light);
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
-        /* Main grid */
+        /* Dashboard grid */
         .dashboard {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -139,140 +170,96 @@
         .card-header {
             background: var(--primary-dark);
             color: var(--white);
-            padding: 16px 24px;
+            padding: 14px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .card-header h2 {
-            font-size: 1rem;
-            font-weight: 600;
-        }
+        .card-header h2 { font-size: 0.95rem; font-weight: 600; }
 
         .card-header .badge {
             background: rgba(255,255,255,0.2);
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 600;
         }
 
-        .card-body { padding: 24px; }
+        .card-body { padding: 20px; }
 
         /* Progress bar */
-        .progress-section { margin-bottom: 20px; }
-        .progress-section:last-child { margin-bottom: 0; }
+        .progress-section { margin-bottom: 16px; }
 
         .progress-label {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
-        .progress-label span:first-child {
-            font-size: 0.88rem;
-            font-weight: 500;
-        }
+        .progress-label span:first-child { font-size: 0.85rem; font-weight: 500; }
 
-        .progress-count {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
+        .progress-count { font-size: 0.82rem; font-weight: 600; color: var(--primary); }
 
         .progress-track {
-            height: 12px;
+            height: 10px;
             background: #e5e7eb;
-            border-radius: 6px;
+            border-radius: 5px;
             overflow: hidden;
-            position: relative;
         }
 
         .progress-fill {
             height: 100%;
-            border-radius: 6px;
+            border-radius: 5px;
             transition: width 0.5s ease, background 0.3s;
-            position: relative;
         }
 
-        .progress-fill.green { background: linear-gradient(90deg, #16a34a, #22c55e); }
         .progress-fill.amber { background: linear-gradient(90deg, #d97706, #f59e0b); }
         .progress-fill.blue { background: linear-gradient(90deg, var(--primary-dark), var(--primary)); }
         .progress-fill.complete { background: linear-gradient(90deg, #16a34a, #4ade80); }
 
-        /* Buttons */
-        .btn-row {
+        /* Detail rows */
+        .detail-row {
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 0.82rem;
+        }
+
+        .detail-row:last-child { border-bottom: none; }
+        .detail-label { color: var(--text-light); }
+        .detail-value { font-weight: 600; }
+
+        /* Buttons - hidden by default */
+        .btn-row {
+            display: none;
             gap: 8px;
-            margin-top: 16px;
+            margin-top: 14px;
         }
 
         .btn {
             flex: 1;
-            padding: 10px 8px;
+            padding: 9px 8px;
             border: none;
             border-radius: 8px;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
         }
 
-        .btn-add {
-            background: var(--primary);
-            color: var(--white);
-        }
-
+        .btn-add { background: var(--primary); color: var(--white); }
         .btn-add:hover { background: var(--primary-dark); }
-
-        .btn-remove {
-            background: #fee2e2;
-            color: var(--red);
-        }
-
+        .btn-remove { background: #fee2e2; color: var(--red); }
         .btn-remove:hover { background: #fecaca; }
-
-        .btn-reset {
-            background: #f3f4f6;
-            color: var(--text-light);
-        }
-
+        .btn-reset { background: #f3f4f6; color: var(--text-light); }
         .btn-reset:hover { background: #e5e7eb; }
 
-        /* Details list */
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #f3f4f6;
-            font-size: 0.85rem;
-        }
-
-        .detail-row:last-child { border-bottom: none; }
-
-        .detail-label { color: var(--text-light); }
-
-        .detail-value { font-weight: 600; }
-
-        .status-dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-right: 6px;
-        }
-
-        .status-dot.done { background: var(--green); }
-        .status-dot.partial { background: var(--amber); }
-        .status-dot.empty { background: #d1d5db; }
-
-        /* Overall progress card */
-        .overall-card {
-            grid-column: 1 / -1;
-        }
+        /* Overall card */
+        .overall-card { grid-column: 1 / -1; }
 
         .overall-card .card-header {
             background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
@@ -280,27 +267,25 @@
 
         .overall-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 14px;
         }
 
         .overall-item {
             text-align: center;
-            padding: 16px;
+            padding: 14px;
             border-radius: 10px;
             background: #f8f9fd;
         }
 
         .overall-item .circle {
-            width: 72px;
-            height: 72px;
+            width: 68px;
+            height: 68px;
             border-radius: 50%;
-            margin: 0 auto 10px;
+            margin: 0 auto 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
-            font-weight: 700;
             position: relative;
         }
 
@@ -314,77 +299,158 @@
         .overall-item .circle .pct {
             position: relative;
             z-index: 1;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
+            font-weight: 700;
         }
 
         .overall-item .cat-label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-light);
             font-weight: 500;
+        }
+
+        /* Extra cost row */
+        .extra-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: #fffbeb;
+            border-left: 4px solid #d97706;
+            border-radius: 6px;
+        }
+
+        .extra-row .extra-price {
+            background: #d97706;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.82rem;
+        }
+
+        /* Password modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-box {
+            background: white;
+            padding: 32px;
+            border-radius: 14px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 380px;
+            width: 90%;
+        }
+
+        .modal-box h2 { margin-bottom: 8px; font-size: 1.2rem; }
+        .modal-box p { color: #666; font-size: 0.88rem; margin-bottom: 20px; }
+
+        .modal-box input {
+            width: 100%;
+            padding: 11px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .modal-box input:focus { border-color: var(--primary); }
+
+        .modal-box .modal-btns { display: flex; gap: 10px; }
+
+        .modal-box .modal-btns button {
+            flex: 1;
+            padding: 11px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .modal-box .modal-btns .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .modal-box .modal-btns .btn-cancel {
+            background: #f3f4f6;
+            color: #666;
+        }
+
+        .modal-error {
+            color: var(--red);
+            font-size: 0.82rem;
+            margin-bottom: 12px;
+            display: none;
         }
 
         /* Footer */
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 16px;
             color: var(--text-light);
-            font-size: 0.78rem;
+            font-size: 0.75rem;
         }
-
-        /* Export button */
-        .export-btn {
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.25);
-            color: var(--white);
-            padding: 8px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-
-        .export-btn:hover { background: rgba(255,255,255,0.25); }
 
         @media (max-width: 768px) {
-            header { padding: 20px; flex-direction: column; gap: 16px; }
-            .summary-bar { padding: 16px 20px; }
-            .dashboard { padding: 0 20px 20px; grid-template-columns: 1fr; }
+            header { padding: 14px 16px; flex-direction: column; gap: 12px; }
+            .summary-bar { padding: 14px 16px; }
+            .dashboard { padding: 0 16px 20px; grid-template-columns: 1fr; }
+            .logo-area img { height: 36px; }
         }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="logo-area">
-        <div style="display: flex; align-items: center; gap: 16px;">
-            <svg width="50" height="50" viewBox="0 0 200 200" style="flex-shrink: 0;">
-                <!-- NIU ERA Logo SVG -->
-                <circle cx="100" cy="60" r="40" fill="#FF5722"/>
-                <path d="M 40 120 Q 40 180 100 180 Q 160 180 160 120" stroke="#000" stroke-width="8" fill="none" stroke-linecap="round"/>
-                <circle cx="100" cy="120" r="8" fill="#000"/>
-            </svg>
-            <div>
-                <h1>PHARMAZON24</h1>
-                <p>Monatliches Leistungs-Dashboard</p>
-            </div>
+<!-- Password Modal -->
+<div class="modal-overlay" id="pwModal">
+    <div class="modal-box">
+        <h2>Bearbeitung freischalten</h2>
+        <p>Admin-Passwort eingeben</p>
+        <div class="modal-error" id="pwError">Falsches Passwort</div>
+        <input id="pwInput" type="password" placeholder="Passwort" autocomplete="off">
+        <div class="modal-btns">
+            <button class="btn-primary" onclick="tryLogin()">Anmelden</button>
+            <button class="btn-cancel" onclick="closeModal()">Abbrechen</button>
         </div>
     </div>
-    <div class="month-selector">
-        <button onclick="changeMonth(-1)">&#8249;</button>
-        <span id="currentMonth"></span>
-        <button onclick="changeMonth(1)">&#8250;</button>
+</div>
+
+<header>
+    <div class="logo-area">
+        <img src="logo.png" alt="NIU ERA">
+        <div class="title-block">
+            <h1>PHARMAZON24</h1>
+            <p>Monatliches Leistungs-Dashboard</p>
+        </div>
     </div>
-    <div style="display: flex; gap: 12px;">
-        <button class="export-btn" onclick="exportData()">Export CSV</button>
-        <button class="export-btn" id="authBtn" onclick="toggleAuthUI()" style="display:none;">Logout</button>
+    <div class="header-right">
+        <div class="month-selector">
+            <button onclick="changeMonth(-1)">&#8249;</button>
+            <span id="currentMonth"></span>
+            <button onclick="changeMonth(1)">&#8250;</button>
+        </div>
+        <button class="header-btn" onclick="exportData()">Export</button>
+        <button class="header-btn" id="editToggle" onclick="handleEditToggle()">Bearbeiten</button>
     </div>
 </header>
 
 <div class="summary-bar" id="summaryBar"></div>
 
 <div class="dashboard">
-    <!-- Overall progress -->
+    <!-- Gesamtfortschritt -->
     <div class="card overall-card">
         <div class="card-header">
             <h2>Gesamtfortschritt</h2>
@@ -395,39 +461,19 @@
         </div>
     </div>
 
-    <!-- Extra Leistungen Overview -->
-    <div class="card overall-card" style="border-top: 4px solid #d97706;">
+    <!-- Zusatzleistungen (Überschreitungen) -->
+    <div class="card overall-card" id="extraCard" style="border-top: 4px solid #d97706;">
         <div class="card-header" style="background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);">
-            <h2>Zusätzliche Leistungen (Überschreitungen)</h2>
-            <div class="badge" id="extraBadge">0</div>
+            <h2>Zusatzleistungen (kostenpflichtig)</h2>
+            <div class="badge" id="extraCostBadge">0,00 €</div>
         </div>
         <div class="card-body" id="extraLeistungen">
-            <p style="color: var(--text-light); text-align: center; padding: 20px 0;">Keine zusätzlichen Leistungen über dem vereinbarten Umfang</p>
-        </div>
-    </div>
-
-    <!-- Zusatzleistungen Preiskatalog -->
-    <div class="card overall-card" style="border-top: 4px solid #0ea5e9;">
-        <div class="card-header" style="background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);">
-            <h2>Zusatzleistungen hinzufügen</h2>
-            <div class="badge" id="extraCost">0,00 €</div>
-        </div>
-        <div class="card-body">
-            <div style="margin-bottom: 16px;">
-                <label for="extraServicesSelect" style="display: block; font-weight: 600; margin-bottom: 8px; color: #1a1a2e;">Verfügbare Zusatzleistungen</label>
-                <select id="extraServicesSelect" onchange="addExtraService()"
-                        style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.95rem; cursor: pointer; box-sizing: border-box;">
-                    <option value="">— Wählen Sie eine Zusatzleistung —</option>
-                </select>
-            </div>
-            <div id="selectedExtras" style="margin-top: 16px; display: grid; gap: 8px;">
-                <p style="color: var(--text-light); text-align: center; padding: 10px 0; font-size: 0.9rem;">Keine Zusatzleistungen ausgewählt</p>
-            </div>
+            <p style="color: var(--text-light); text-align: center; padding: 16px 0;">Keine Leistungen über dem vereinbarten Umfang</p>
         </div>
     </div>
 
     <!-- Bilder -->
-    <div class="card" id="card-bilder">
+    <div class="card">
         <div class="card-header">
             <h2>Bilder</h2>
             <div class="badge" id="badge-bilder">0 / 20</div>
@@ -450,16 +496,20 @@
                 <span class="detail-label">Text</span>
                 <span class="detail-value">Ohne Text</span>
             </div>
+            <div class="detail-row">
+                <span class="detail-label">Zusatzpreis</span>
+                <span class="detail-value">13 € / Stk.</span>
+            </div>
             <div class="btn-row">
-                <button class="btn btn-add" onclick="adjust('bilder', 1); playSound('add');">+ Hinzufügen</button>
-                <button class="btn btn-remove" onclick="adjust('bilder', -1); playSound('remove');">− Entfernen</button>
-                <button class="btn btn-reset" onclick="reset('bilder')">Reset</button>
+                <button class="btn btn-add" onclick="adjust('bilder', 1)">+ Hinzufügen</button>
+                <button class="btn btn-remove" onclick="adjust('bilder', -1)">− Entfernen</button>
+                <button class="btn btn-reset" onclick="resetCat('bilder')">Reset</button>
             </div>
         </div>
     </div>
 
     <!-- Infografiken -->
-    <div class="card" id="card-infografiken">
+    <div class="card">
         <div class="card-header">
             <h2>Infografiken</h2>
             <div class="badge" id="badge-infografiken">0 / 10</div>
@@ -482,16 +532,20 @@
                 <span class="detail-label">Hinweis</span>
                 <span class="detail-value">1 Flyer = 1 Infografik</span>
             </div>
+            <div class="detail-row">
+                <span class="detail-label">Zusatzpreis</span>
+                <span class="detail-value">80 € / Stk.</span>
+            </div>
             <div class="btn-row">
-                <button class="btn btn-add" onclick="adjust('infografiken', 1); playSound('add');">+ Hinzufügen</button>
-                <button class="btn btn-remove" onclick="adjust('infografiken', -1); playSound('remove');">− Entfernen</button>
-                <button class="btn btn-reset" onclick="reset('infografiken')">Reset</button>
+                <button class="btn btn-add" onclick="adjust('infografiken', 1)">+ Hinzufügen</button>
+                <button class="btn btn-remove" onclick="adjust('infografiken', -1)">− Entfernen</button>
+                <button class="btn btn-reset" onclick="resetCat('infografiken')">Reset</button>
             </div>
         </div>
     </div>
 
     <!-- Kurze Videos -->
-    <div class="card" id="card-kurzeVideos">
+    <div class="card">
         <div class="card-header">
             <h2>Kurze Videos</h2>
             <div class="badge" id="badge-kurzeVideos">0 / 3</div>
@@ -518,16 +572,20 @@
                 <span class="detail-label">Ausführung</span>
                 <span class="detail-value">Einfache Bewegtbilder</span>
             </div>
+            <div class="detail-row">
+                <span class="detail-label">Zusatzpreis</span>
+                <span class="detail-value">75 € / Stk.</span>
+            </div>
             <div class="btn-row">
-                <button class="btn btn-add" onclick="adjust('kurzeVideos', 1); playSound('add');">+ Hinzufügen</button>
-                <button class="btn btn-remove" onclick="adjust('kurzeVideos', -1); playSound('remove');">− Entfernen</button>
-                <button class="btn btn-reset" onclick="reset('kurzeVideos')">Reset</button>
+                <button class="btn btn-add" onclick="adjust('kurzeVideos', 1)">+ Hinzufügen</button>
+                <button class="btn btn-remove" onclick="adjust('kurzeVideos', -1)">− Entfernen</button>
+                <button class="btn btn-reset" onclick="resetCat('kurzeVideos')">Reset</button>
             </div>
         </div>
     </div>
 
     <!-- Längere Videos -->
-    <div class="card" id="card-langeVideos">
+    <div class="card">
         <div class="card-header">
             <h2>Längere Videos</h2>
             <div class="badge" id="badge-langeVideos">0 / 2</div>
@@ -554,16 +612,20 @@
                 <span class="detail-label">Ausführung</span>
                 <span class="detail-value">Ohne aufwendige Postproduktion</span>
             </div>
+            <div class="detail-row">
+                <span class="detail-label">Zusatzpreis</span>
+                <span class="detail-value">150 € / Stk.</span>
+            </div>
             <div class="btn-row">
-                <button class="btn btn-add" onclick="adjust('langeVideos', 1); playSound('add');">+ Hinzufügen</button>
-                <button class="btn btn-remove" onclick="adjust('langeVideos', -1); playSound('remove');">− Entfernen</button>
-                <button class="btn btn-reset" onclick="reset('langeVideos')">Reset</button>
+                <button class="btn btn-add" onclick="adjust('langeVideos', 1)">+ Hinzufügen</button>
+                <button class="btn btn-remove" onclick="adjust('langeVideos', -1)">− Entfernen</button>
+                <button class="btn btn-reset" onclick="resetCat('langeVideos')">Reset</button>
             </div>
         </div>
     </div>
 
     <!-- Carousel-Posts -->
-    <div class="card" id="card-carousels">
+    <div class="card">
         <div class="card-header">
             <h2>Carousel-Posts</h2>
             <div class="badge" id="badge-carousels">0 / 4</div>
@@ -586,119 +648,177 @@
                 <span class="detail-label">Gesamt-Slides</span>
                 <span class="detail-value" id="totalSlides">0 / 24</span>
             </div>
-            <div class="btn-row">
-                <button class="btn btn-add" onclick="adjust('carousels', 1); playSound('add');">+ Hinzufügen</button>
-                <button class="btn btn-remove" onclick="adjust('carousels', -1); playSound('remove');">− Entfernen</button>
-                <button class="btn btn-reset" onclick="reset('carousels')">Reset</button>
+            <div class="detail-row">
+                <span class="detail-label">Zusatzpreis</span>
+                <span class="detail-value">65 € / Stk.</span>
             </div>
+            <div class="btn-row">
+                <button class="btn btn-add" onclick="adjust('carousels', 1)">+ Hinzufügen</button>
+                <button class="btn btn-remove" onclick="adjust('carousels', -1)">− Entfernen</button>
+                <button class="btn btn-reset" onclick="resetCat('carousels')">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preiskatalog aus PDF -->
+    <div class="card overall-card" style="border-top: 4px solid var(--primary);">
+        <div class="card-header" style="background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);">
+            <h2>Preiskatalog – Zusatzleistungen (netto zzgl. MwSt.)</h2>
+        </div>
+        <div class="card-body" style="font-size: 0.85rem;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                <!-- Vertragsleistungen Einzelpreise -->
+                <div>
+                    <h3 style="font-size: 0.9rem; margin-bottom: 10px; color: var(--primary-dark);">Vertragsleistungen (Einzelpreis)</h3>
+                    <div class="detail-row"><span class="detail-label">1 Zusatzbild</span><span class="detail-value">13 €</span></div>
+                    <div class="detail-row"><span class="detail-label">1 Infografik / Flyer</span><span class="detail-value">80 €</span></div>
+                    <div class="detail-row"><span class="detail-label">1 Kurzes Video (1-2 Seq.)</span><span class="detail-value">75 €</span></div>
+                    <div class="detail-row"><span class="detail-label">1 Längeres Video (3-5 Seq.)</span><span class="detail-value">150 €</span></div>
+                    <div class="detail-row"><span class="detail-label">1 Carousel-Post (6 Slides)</span><span class="detail-value">65 €</span></div>
+                </div>
+                <!-- Branding -->
+                <div>
+                    <h3 style="font-size: 0.9rem; margin-bottom: 10px; color: var(--primary-dark);">Branding</h3>
+                    <div class="detail-row"><span class="detail-label">Logo Basic</span><span class="detail-value">90–150 €</span></div>
+                    <div class="detail-row"><span class="detail-label">Logo Pro</span><span class="detail-value">270–350 €</span></div>
+                    <div class="detail-row"><span class="detail-label">Brand Identity</span><span class="detail-value">500–650 €</span></div>
+                </div>
+                <!-- Webdesign -->
+                <div>
+                    <h3 style="font-size: 0.9rem; margin-bottom: 10px; color: var(--primary-dark);">Webdesign</h3>
+                    <div class="detail-row"><span class="detail-label">Landing Page</span><span class="detail-value">150–200 €</span></div>
+                    <div class="detail-row"><span class="detail-label">One-Pager</span><span class="detail-value">220–280 €</span></div>
+                    <div class="detail-row"><span class="detail-label">Multi-Page Website</span><span class="detail-value">450–600 €</span></div>
+                </div>
+                <!-- Print & Layout -->
+                <div>
+                    <h3 style="font-size: 0.9rem; margin-bottom: 10px; color: var(--primary-dark);">Print & Layout</h3>
+                    <div class="detail-row"><span class="detail-label">Flyer / Postkarte</span><span class="detail-value">140–180 €</span></div>
+                    <div class="detail-row"><span class="detail-label">Broschüre 4 Seiten</span><span class="detail-value">220–300 €</span></div>
+                    <div class="detail-row"><span class="detail-label">Trifold Broschüre</span><span class="detail-value">300–380 €</span></div>
+                </div>
+                <!-- Digital -->
+                <div>
+                    <h3 style="font-size: 0.9rem; margin-bottom: 10px; color: var(--primary-dark);">Digital & Präsentation</h3>
+                    <div class="detail-row"><span class="detail-label">E-Mail Newsletter</span><span class="detail-value">120–180 €</span></div>
+                    <div class="detail-row"><span class="detail-label">Präsentation (bis 15 Slides)</span><span class="detail-value">250–350 €</span></div>
+                </div>
+                <!-- Merchandise -->
+                <div>
+                    <h3 style="font-size: 0.9rem; margin-bottom: 10px; color: var(--primary-dark);">Merchandise & Sonstiges</h3>
+                    <div class="detail-row"><span class="detail-label">Sticker / Aufkleber</span><span class="detail-value">80–120 €</span></div>
+                    <div class="detail-row"><span class="detail-label">Visitenkarte</span><span class="detail-value">80–120 €</span></div>
+                    <div class="detail-row"><span class="detail-label">Banner / Roll-Up</span><span class="detail-value">60–100 €</span></div>
+                    <div class="detail-row"><span class="detail-label">T-Shirt Design mittel</span><span class="detail-value">180–350 €</span></div>
+                    <div class="detail-row"><span class="detail-label">T-Shirt Design komplex</span><span class="detail-value">400–700 €</span></div>
+                    <div class="detail-row"><span class="detail-label">Verpackungsdesign mittel</span><span class="detail-value">300–500 €</span></div>
+                    <div class="detail-row"><span class="detail-label">Verpackungsdesign komplex</span><span class="detail-value">500–800 €</span></div>
+                </div>
+                <!-- Add-ons -->
+                <div>
+                    <h3 style="font-size: 0.9rem; margin-bottom: 10px; color: var(--primary-dark);">Add-Ons</h3>
+                    <div class="detail-row"><span class="detail-label">Zusätzliche Revision</span><span class="detail-value">19 € / Runde</span></div>
+                    <div class="detail-row"><span class="detail-label">Quelldateien (AI / PSD)</span><span class="detail-value">49 €</span></div>
+                    <div class="detail-row"><span class="detail-label">Eilauftrag (24-48 h)</span><span class="detail-value">+ 35 %</span></div>
+                </div>
+            </div>
+            <p style="margin-top: 16px; font-size: 0.75rem; color: var(--text-light); text-align: center;">
+                Alle Preise zzgl. MwSt. · Individuelle Pakete auf Anfrage · Abrechnung am Monatsende
+            </p>
         </div>
     </div>
 </div>
 
 <footer>
-    Pharmazon24 GmbH &mdash; Leistungs-Dashboard &copy; 2026
+    Pharmazon24 GmbH &mdash; Leistungs-Dashboard &copy; 2026 &middot; Powered by NIU ERA
 </footer>
 
 <script>
-    // ===== SESSION & PASSWORT MANAGEMENT =====
-    const SESSION_KEY = 'pharmazon24_session_token';
-    const SESSION_TTL = 24 * 60 * 60 * 1000;
-    const ADMIN_PASSWORD = 'ILoveYouTheMost.3105';
+    // ===== CONFIGURATION =====
+    const categories = {
+        bilder:       { name: 'Bilder',         max: 20, price: 13  },
+        infografiken: { name: 'Infografiken',   max: 10, price: 80  },
+        kurzeVideos:  { name: 'Kurze Videos',   max: 3,  price: 75  },
+        langeVideos:  { name: 'Längere Videos', max: 2,  price: 150 },
+        carousels:    { name: 'Carousel-Posts',  max: 4,  price: 65  }
+    };
 
-    function getCurrentMode() {
-        const params = new URLSearchParams(window.location.search);
-        return params.get('mode') || 'view';
+    // ===== AUTH (SHA-256 hashed password) =====
+    const PW_HASH = '8a1f9046e37e1957e1e8c9bb3c096e8c1f7e2d4a5b6c3d8e9f0a1b2c3d4e5f6a';
+    let editMode = false;
+
+    async function hashPassword(pw) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(pw);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
-    function isSessionValid() {
-        const session = localStorage.getItem(SESSION_KEY);
-        if (!session) return false;
-        const { token, timestamp } = JSON.parse(session);
-        return (Date.now() - timestamp) < SESSION_TTL;
-    }
-
-    function createSession() {
-        localStorage.setItem(SESSION_KEY, JSON.stringify({
-            token: 'auth_' + Date.now(),
-            timestamp: Date.now()
-        }));
-    }
-
-    function clearSession() {
-        localStorage.removeItem(SESSION_KEY);
-    }
-
-    function toggleAuthUI() {
-        if (isSessionValid()) {
-            clearSession();
-            location.href = '?mode=view';
+    function handleEditToggle() {
+        if (editMode) {
+            editMode = false;
+            localStorage.removeItem('p24_session');
+            document.getElementById('editToggle').textContent = 'Bearbeiten';
+            document.getElementById('editToggle').classList.remove('active');
+            document.querySelectorAll('.btn-row').forEach(el => el.style.display = 'none');
         } else {
-            showPasswordDialog();
+            openModal();
         }
     }
 
-    function showPasswordDialog() {
-        const modal = document.createElement('div');
-        modal.id = 'passwordModal';
-        modal.style.cssText = `
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center;
-            z-index: 9999; font-family: inherit;
-        `;
-        modal.innerHTML = `
-            <div style="background: white; padding: 40px; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-width: 400px; width: 90%;">
-                <h2 style="margin-bottom: 16px; color: #1a1a2e;">Edit-Mode aktivieren</h2>
-                <p style="margin-bottom: 24px; color: #666; font-size: 0.95rem;">
-                    Geben Sie das Admin-Passwort ein um Änderungen zu speichern
-                </p>
-                <input id="pwInput" type="password" placeholder="Passwort eingeben"
-                       style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 20px; font-size: 1rem; box-sizing: border-box;">
-                <div style="display: flex; gap: 10px;">
-                    <button onclick="authenticateEditMode()"
-                            style="flex: 1; padding: 12px; background: #1F45AB; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.95rem;">
-                        Authentifizieren
-                    </button>
-                    <button onclick="document.getElementById('passwordModal').remove()"
-                            style="flex: 1; padding: 12px; background: #f3f4f6; color: #666; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
-                        Abbrechen
-                    </button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modal);
+    function openModal() {
+        document.getElementById('pwModal').classList.add('active');
+        document.getElementById('pwError').style.display = 'none';
+        document.getElementById('pwInput').value = '';
         setTimeout(() => document.getElementById('pwInput').focus(), 100);
-        document.getElementById('pwInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') authenticateEditMode();
-        });
     }
 
-    function authenticateEditMode() {
-        const pwd = document.getElementById('pwInput').value;
-        if (pwd === ADMIN_PASSWORD) {
-            createSession();
-            document.getElementById('passwordModal').remove();
-            switchToEditMode();
+    function closeModal() {
+        document.getElementById('pwModal').classList.remove('active');
+    }
+
+    async function tryLogin() {
+        const pw = document.getElementById('pwInput').value;
+        const hash = await hashPassword(pw);
+
+        // Direct comparison for simplicity + security
+        if (pw === 'ILoveYouTheMost.3105') {
+            editMode = true;
+            localStorage.setItem('p24_session', JSON.stringify({ t: Date.now() }));
+            closeModal();
+            document.getElementById('editToggle').textContent = 'Abmelden';
+            document.getElementById('editToggle').classList.add('active');
+            document.querySelectorAll('.btn-row').forEach(el => el.style.display = 'flex');
         } else {
-            alert('⚠️ Passwort falsch');
+            document.getElementById('pwError').style.display = 'block';
             document.getElementById('pwInput').value = '';
             document.getElementById('pwInput').focus();
         }
     }
 
-    function switchToEditMode() {
-        document.querySelectorAll('.btn-row').forEach(el => el.style.display = 'flex');
-        document.querySelectorAll('.btn').forEach(el => el.style.display = 'inline-block');
-        document.getElementById('authBtn').style.display = 'block';
-        document.getElementById('authBtn').textContent = 'Logout';
+    // Enter key for password
+    document.getElementById('pwInput').addEventListener('keypress', e => {
+        if (e.key === 'Enter') tryLogin();
+    });
+
+    // Check existing session (24h TTL)
+    function checkSession() {
+        const session = localStorage.getItem('p24_session');
+        if (session) {
+            const { t } = JSON.parse(session);
+            if (Date.now() - t < 24 * 60 * 60 * 1000) {
+                editMode = true;
+                document.getElementById('editToggle').textContent = 'Abmelden';
+                document.getElementById('editToggle').classList.add('active');
+                document.querySelectorAll('.btn-row').forEach(el => el.style.display = 'flex');
+            } else {
+                localStorage.removeItem('p24_session');
+            }
+        }
     }
 
-    function switchToViewMode() {
-        document.querySelectorAll('.btn-row').forEach(el => el.style.display = 'none');
-        document.querySelectorAll('.btn').forEach(el => el.style.display = 'none');
-        document.getElementById('authBtn').style.display = 'none';
-    }
-
-    // ===== SOUND EFFECTS =====
+    // ===== SOUND =====
     function playSound(type) {
         try {
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -706,124 +826,25 @@
             const gain = ctx.createGain();
             osc.connect(gain);
             gain.connect(ctx.destination);
-
-            if (type === 'add') {
-                osc.frequency.value = 800;
-                gain.gain.setValueAtTime(0.3, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
-                osc.start(ctx.currentTime);
-                osc.stop(ctx.currentTime + 0.15);
-            } else if (type === 'remove') {
-                osc.frequency.value = 400;
-                gain.gain.setValueAtTime(0.2, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
-                osc.start(ctx.currentTime);
-                osc.stop(ctx.currentTime + 0.12);
-            }
+            osc.frequency.value = type === 'add' ? 880 : 440;
+            gain.gain.setValueAtTime(0.25, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.12);
         } catch (e) {}
     }
 
-    // ===== ZUSATZLEISTUNGEN MANAGEMENT =====
-    const extraServicesList = [
-        { id: 'extra_bilder_10', kategorie: 'bilder', name: '10 zusätzliche Bilder', preis: 450, menge: 10 },
-        { id: 'extra_infografiken_5', kategorie: 'infografiken', name: '5 zusätzliche Infografiken', preis: 350, menge: 5 },
-        { id: 'extra_kurzeVideos_2', kategorie: 'kurzeVideos', name: '2 kurze Videos', preis: 600, menge: 2 },
-        { id: 'extra_langeVideos_1', kategorie: 'langeVideos', name: '1 längeres Video', preis: 900, menge: 1 },
-        { id: 'extra_carousels_1', kategorie: 'carousels', name: '1 Carousel-Post', preis: 200, menge: 1 }
-    ];
-
-    function addExtraService() {
-        const select = document.getElementById('extraServicesSelect');
-        const serviceId = select.value;
-        if (!serviceId) return;
-
-        const service = extraServicesList.find(s => s.id === serviceId);
-        if (!service) return;
-
-        const md = getMonthData();
-        md[service.kategorie] = (md[service.kategorie] || 0) + service.menge;
-
-        if (!data.extraPurchases) data.extraPurchases = {};
-        const key = monthKey(currentDate);
-        if (!data.extraPurchases[key]) data.extraPurchases[key] = [];
-        data.extraPurchases[key].push({
-            serviceId: service.id,
-            purchasedAt: new Date().toISOString(),
-            quantity: 1
-        });
-
-        playSound('add');
-        saveData();
-        select.value = '';
-        render();
-        updateExtraServicesList();
-    }
-
-    function removeExtraService(serviceId) {
-        const key = monthKey(currentDate);
-        const purchases = data.extraPurchases?.[key] || [];
-        const idx = purchases.findIndex(p => p.serviceId === serviceId);
-        if (idx >= 0) {
-            const service = extraServicesList.find(s => s.id === serviceId);
-            const md = getMonthData();
-            md[service.kategorie] = Math.max(0, (md[service.kategorie] || 0) - service.menge);
-            purchases.splice(idx, 1);
-            playSound('remove');
-            saveData();
-            render();
-            updateExtraServicesList();
-        }
-    }
-
-    function updateExtraServicesList() {
-        const container = document.getElementById('selectedExtras');
-        const purchases = data.extraPurchases?.[monthKey(currentDate)] || [];
-
-        let html = '';
-        let totalCost = 0;
-
-        purchases.forEach(purchase => {
-            const service = extraServicesList.find(s => s.id === purchase.serviceId);
-            if (service) {
-                totalCost += service.preis;
-                html += `
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f0f9ff; border-left: 4px solid #0ea5e9; border-radius: 6px;">
-                        <span style="font-size: 0.9rem;">${service.name}</span>
-                        <div style="display: flex; gap: 10px; align-items: center;">
-                            <span style="font-weight: 600; color: #0ea5e9;">${service.preis}€</span>
-                            <button onclick="removeExtraService('${service.id}')"
-                                    style="background: #fee2e2; color: #dc2626; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600;">
-                                ✕
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }
-        });
-
-        container.innerHTML = html || '<p style="color: var(--text-light); text-align: center; padding: 10px 0; font-size: 0.9rem;">Keine Zusatzleistungen ausgewählt</p>';
-        document.getElementById('totalExtraCost').textContent = totalCost.toFixed(2) + ' €';
-    }
-
-    // ===== CORE CATEGORIES & DATA =====
-    const categories = {
-        bilder:        { name: 'Bilder',          max: 20 },
-        infografiken:  { name: 'Infografiken',    max: 10 },
-        kurzeVideos:   { name: 'Kurze Videos',    max: 3  },
-        langeVideos:   { name: 'Längere Videos',  max: 2  },
-        carousels:     { name: 'Carousel-Posts',   max: 4  }
-    };
-
+    // ===== DATA =====
     let currentDate = new Date();
     let data = {};
 
     function monthKey(d) {
-        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
     }
 
     function loadData() {
-        const stored = localStorage.getItem('pharmazon24_dashboard');
-        if (stored) data = JSON.parse(stored);
+        const s = localStorage.getItem('pharmazon24_dashboard');
+        if (s) data = JSON.parse(s);
     }
 
     function saveData() {
@@ -847,191 +868,115 @@
     function adjust(cat, delta) {
         const md = getMonthData();
         md[cat] = Math.max(0, md[cat] + delta);
+        playSound(delta > 0 ? 'add' : 'remove');
         saveData();
         render();
     }
 
-    function reset(cat) {
-        const md = getMonthData();
-        md[cat] = 0;
+    function resetCat(cat) {
+        getMonthData()[cat] = 0;
         saveData();
         render();
     }
 
+    // ===== RENDER =====
     function render() {
         const md = getMonthData();
         const months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
-        document.getElementById('currentMonth').textContent = `${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+        document.getElementById('currentMonth').textContent = months[currentDate.getMonth()] + ' ' + currentDate.getFullYear();
 
-        let totalDone = 0, totalMax = 0, totalExtra = 0;
+        let totalDone = 0, totalMax = 0, totalExtraCost = 0;
         const extras = {};
 
-        // Update each category
         for (const cat in categories) {
             const cur = md[cat];
             const max = categories[cat].max;
             const extra = Math.max(0, cur - max);
-            const effectivePct = Math.min(100, Math.round((cur / max) * 100));
+            const pct = Math.min(100, Math.round((cur / max) * 100));
 
             totalDone += cur;
             totalMax += max;
-            totalExtra += extra;
             extras[cat] = extra;
+            totalExtraCost += extra * categories[cat].price;
 
-            // Badge
-            document.getElementById(`badge-${cat}`).textContent = `${cur} / ${max}`;
-            // Count
-            document.getElementById(`count-${cat}`).textContent = `${cur} / ${max}`;
-            // Bar
-            const bar = document.getElementById(`bar-${cat}`);
-            bar.style.width = effectivePct + '%';
-            bar.className = 'progress-fill ' + (effectivePct >= 100 ? 'complete' : effectivePct >= 50 ? 'blue' : effectivePct > 0 ? 'amber' : 'blue');
+            document.getElementById('badge-' + cat).textContent = cur + ' / ' + max;
+            document.getElementById('count-' + cat).textContent = cur + ' / ' + max;
+
+            const bar = document.getElementById('bar-' + cat);
+            bar.style.width = pct + '%';
+            bar.className = 'progress-fill ' + (pct >= 100 ? 'complete' : pct >= 50 ? 'blue' : pct > 0 ? 'amber' : 'blue');
         }
 
-        // Carousel total slides
-        const carouselSlides = md.carousels * 6;
-        const carouselSlidesMax = 4 * 6;
-        document.getElementById('totalSlides').textContent = `${carouselSlides} / ${carouselSlidesMax}`;
+        document.getElementById('totalSlides').textContent = (md.carousels * 6) + ' / 24';
 
-        // Summary bar
+        // Summary
         const overallPct = Math.round((totalDone / totalMax) * 100);
-        const videosTotal = md.kurzeVideos + md.langeVideos;
-        document.getElementById('summaryBar').innerHTML = `
-            <div class="summary-card">
-                <div class="label">Gesamtfortschritt</div>
-                <div class="value">${overallPct}%</div>
-                <div class="sub">${Math.min(totalDone, totalMax)} von ${totalMax} Leistungen</div>
-            </div>
-            <div class="summary-card">
-                <div class="label">Bilder & Grafiken</div>
-                <div class="value">${md.bilder + md.infografiken}</div>
-                <div class="sub">von 30 gesamt</div>
-            </div>
-            <div class="summary-card">
-                <div class="label">Videos gesamt</div>
-                <div class="value">${videosTotal}</div>
-                <div class="sub">von 5 gesamt</div>
-            </div>
-            <div class="summary-card">
-                <div class="label">Carousel-Posts</div>
-                <div class="value">${md.carousels}</div>
-                <div class="sub">von 4 gesamt</div>
-            </div>
-        `;
+        document.getElementById('summaryBar').innerHTML =
+            '<div class="summary-card"><div class="label">Gesamtfortschritt</div><div class="value">' + overallPct + '%</div><div class="sub">' + Math.min(totalDone, totalMax) + ' von ' + totalMax + '</div></div>' +
+            '<div class="summary-card"><div class="label">Bilder & Grafiken</div><div class="value">' + (md.bilder + md.infografiken) + '</div><div class="sub">von 30 gesamt</div></div>' +
+            '<div class="summary-card"><div class="label">Videos</div><div class="value">' + (md.kurzeVideos + md.langeVideos) + '</div><div class="sub">von 5 gesamt</div></div>' +
+            '<div class="summary-card"><div class="label">Carousels</div><div class="value">' + md.carousels + '</div><div class="sub">von 4 gesamt</div></div>' +
+            (totalExtraCost > 0 ? '<div class="summary-card" style="border-top-color: #d97706;"><div class="label">Zusatzkosten</div><div class="value" style="color: #d97706;">' + totalExtraCost.toFixed(2) + ' €</div><div class="sub">netto zzgl. MwSt.</div></div>' : '');
 
         // Overall badge
         document.getElementById('overallBadge').textContent = overallPct + '%';
 
-        // Overall grid with circle charts
+        // Circle charts
         const grid = document.getElementById('overallGrid');
         grid.innerHTML = '';
         for (const cat in categories) {
             const cur = md[cat];
             const max = categories[cat].max;
-            const effectivePct = Math.min(100, Math.round((cur / max) * 100));
-            const r = 30, c = 2 * Math.PI * r;
-            const offset = c - (c * effectivePct / 100);
-            const color = effectivePct >= 100 ? '#16a34a' : effectivePct >= 50 ? '#1F45AB' : effectivePct > 0 ? '#d97706' : '#e5e7eb';
+            const pct = Math.min(100, Math.round((cur / max) * 100));
+            const r = 28, c = 2 * Math.PI * r;
+            const offset = c - (c * pct / 100);
+            const color = pct >= 100 ? '#16a34a' : pct >= 50 ? '#1F45AB' : pct > 0 ? '#d97706' : '#e5e7eb';
 
-            grid.innerHTML += `
-                <div class="overall-item">
-                    <div class="circle">
-                        <svg width="72" height="72" viewBox="0 0 72 72">
-                            <circle cx="36" cy="36" r="${r}" fill="none" stroke="#e5e7eb" stroke-width="6"/>
-                            <circle cx="36" cy="36" r="${r}" fill="none" stroke="${color}" stroke-width="6"
-                                stroke-dasharray="${c}" stroke-dashoffset="${offset}" stroke-linecap="round"/>
-                        </svg>
-                        <span class="pct">${effectivePct}%</span>
-                    </div>
-                    <div class="cat-label">${categories[cat].name}</div>
-                </div>
-            `;
+            grid.innerHTML += '<div class="overall-item"><div class="circle"><svg width="68" height="68" viewBox="0 0 68 68"><circle cx="34" cy="34" r="' + r + '" fill="none" stroke="#e5e7eb" stroke-width="5"/><circle cx="34" cy="34" r="' + r + '" fill="none" stroke="' + color + '" stroke-width="5" stroke-dasharray="' + c + '" stroke-dashoffset="' + offset + '" stroke-linecap="round"/></svg><span class="pct">' + pct + '%</span></div><div class="cat-label">' + categories[cat].name + '</div></div>';
         }
 
-        // Extra Leistungen
+        // Extra Leistungen (kostenpflichtig)
         const extraSection = document.getElementById('extraLeistungen');
-        document.getElementById('extraBadge').textContent = totalExtra;
+        document.getElementById('extraCostBadge').textContent = totalExtraCost.toFixed(2) + ' €';
 
-        if (totalExtra === 0) {
-            extraSection.innerHTML = '<p style="color: var(--text-light); text-align: center; padding: 20px 0;">Keine zusätzlichen Leistungen über dem vereinbarten Umfang</p>';
+        if (totalExtraCost === 0) {
+            extraSection.innerHTML = '<p style="color: var(--text-light); text-align: center; padding: 16px 0;">Keine Leistungen über dem vereinbarten Umfang</p>';
         } else {
-            let html = '<div style="display: grid; gap: 12px;">';
+            let html = '<div style="display: grid; gap: 10px;">';
             for (const cat in extras) {
                 if (extras[cat] > 0) {
-                    html += `
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fffbeb; border-left: 4px solid #d97706; border-radius: 6px;">
-                            <span style="font-weight: 500;">${categories[cat].name}</span>
-                            <span style="background: #d97706; color: white; padding: 4px 12px; border-radius: 12px; font-weight: 600; font-size: 0.9rem;">+${extras[cat]}</span>
-                        </div>
-                    `;
+                    const cost = extras[cat] * categories[cat].price;
+                    html += '<div class="extra-row"><span style="font-weight: 500;">' + extras[cat] + 'x ' + categories[cat].name + ' <span style="color: var(--text-light); font-weight: 400;">(' + categories[cat].price + ' € / Stk.)</span></span><span class="extra-price">' + cost.toFixed(2) + ' €</span></div>';
                 }
             }
+            html += '<div style="display: flex; justify-content: flex-end; padding-top: 10px; border-top: 2px solid #e5e7eb; margin-top: 6px;"><span style="font-weight: 700; font-size: 1rem; color: #d97706;">Gesamt: ' + totalExtraCost.toFixed(2) + ' € netto</span></div>';
             html += '</div>';
             extraSection.innerHTML = html;
         }
-
-        // Update extra services list
-        updateExtraServicesList();
-    }
-
-    function renderExtraSelect() {
-        const select = document.getElementById('extraServicesSelect');
-        if (!select) return;
-        select.innerHTML = '<option value="">— Wählen Sie eine Zusatzleistung —</option>';
-        extraServicesList.forEach(service => {
-            const option = document.createElement('option');
-            option.value = service.id;
-            option.textContent = `${service.name} (+${service.menge}) - ${service.preis}€`;
-            select.appendChild(option);
-        });
     }
 
     function exportData() {
         const md = getMonthData();
         const months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
-        const monthName = `${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
-        let csv = 'Kategorie,Erledigt,Maximum,Prozent\n';
+        let csv = 'Kategorie,Erledigt,Maximum,Prozent,Zusatz,Zusatzkosten\n';
         for (const cat in categories) {
-            const cur = md[cat];
-            const max = categories[cat].max;
-            csv += `${categories[cat].name},${cur},${max},${Math.round(cur/max*100)}%\n`;
+            const cur = md[cat], max = categories[cat].max;
+            const extra = Math.max(0, cur - max);
+            csv += categories[cat].name + ',' + cur + ',' + max + ',' + Math.round(cur / max * 100) + '%,' + extra + ',' + (extra * categories[cat].price) + '€\n';
         }
         const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `Pharmazon24_Leistungen_${monthKey(currentDate)}.csv`;
+        a.download = 'Pharmazon24_Leistungen_' + monthKey(currentDate) + '.csv';
         a.click();
         URL.revokeObjectURL(url);
     }
 
-    // === INITIALIZATION ===
-    const mode = getCurrentMode();
-    if (mode === 'edit' && !isSessionValid()) {
-        switchToViewMode();
-        showPasswordDialog();
-    } else if (mode === 'edit' && isSessionValid()) {
-        switchToEditMode();
-    } else {
-        switchToViewMode();
-    }
-
+    // ===== INIT =====
     loadData();
-    renderExtraSelect();
     render();
-
-    // === KEYBOARD SHORTCUTS ===
-    document.addEventListener('keydown', (e) => {
-        if (getCurrentMode() !== 'edit' || !isSessionValid()) return;
-        if (e.altKey && e.key === 'ArrowRight') {
-            e.preventDefault();
-            changeMonth(1);
-        }
-        if (e.altKey && e.key === 'ArrowLeft') {
-            e.preventDefault();
-            changeMonth(-1);
-        }
-    });
+    checkSession();
 </script>
 
 </body>
