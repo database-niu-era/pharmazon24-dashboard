@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmazon24 – Leistungs-Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #1F45AB;
+            --primary-dark: #142B6C;
+            --white: #ffffff;
+            --black: #0a0a0a;
+            --bg: #f4f6fb;
+            --card-bg: #ffffff;
+            --text: #1a1a2e;
+            --text-light: #6b7280;
+            --green: #16a34a;
+            --amber: #d97706;
+            --red: #dc2626;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: var(--white);
+            padding: 28px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(20, 43, 108, 0.3);
+        }
+
+        .logo-area h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-area p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        .month-selector {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .month-selector button {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: var(--white);
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .month-selector button:hover { background: rgba(255,255,255,0.25); }
+
+        #currentMonth {
+            font-size: 1.1rem;
+            font-weight: 600;
+            min-width: 180px;
+            text-align: center;
+        }
+
+        /* Summary bar */
+        .summary-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            padding: 24px 40px;
+        }
+
+        .summary-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-top: 3px solid var(--primary);
+        }
+
+        .summary-card .label {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .summary-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .summary-card .sub {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        /* Main grid */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 20px;
+            padding: 0 40px 40px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+        }
+
+        .card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+
+        .card-header {
+            background: var(--primary-dark);
+            color: var(--white);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .card-header .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .card-body { padding: 24px; }
+
+        /* Progress bar */
+        .progress-section { margin-bottom: 20px; }
+        .progress-section:last-child { margin-bottom: 0; }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .progress-label span:first-child {
+            font-size: 0.88rem;
+            font-weight: 500;
+        }
+
+        .progress-count {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .progress-track {
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.5s ease, background 0.3s;
+            position: relative;
+        }
+
+        .progress-fill.green { background: linear-gradient(90deg, #16a34a, #22c55e); }
+        .progress-fill.amber { background: linear-gradient(90deg, #d97706, #f59e0b); }
+        .progress-fill.blue { background: linear-gradient(90deg, var(--primary-dark), var(--primary)); }
+        .progress-fill.complete { background: linear-gradient(90deg, #16a34a, #4ade80); }
+
+        /* Buttons */
+        .btn-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px 8px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-add {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-add:hover { background: var(--primary-dark); }
+
+        .btn-remove {
+            background: #fee2e2;
+            color: var(--red);
+        }
+
+        .btn-remove:hover { background: #fecaca; }
+
+        .btn-reset {
+            background: #f3f4f6;
+            color: var(--text-light);
+        }
+
+        .btn-reset:hover { background: #e5e7eb; }
+
+        /* Details list */
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 0.85rem;
+        }
+
+        .detail-row:last-child { border-bottom: none; }
+
+        .detail-label { color: var(--text-light); }
+
+        .detail-value { font-weight: 600; }
+
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        .status-dot.done { background: var(--green); }
+        .status-dot.partial { background: var(--amber); }
+        .status-dot.empty { background: #d1d5db; }
+
+        /* Overall progress card */
+        .overall-card {
+            grid-column: 1 / -1;
+        }
+
+        .overall-card .card-header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+        }
+
+        .overall-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+        }
+
+        .overall-item {
+            text-align: center;
+            padding: 16px;
+            border-radius: 10px;
+            background: #f8f9fd;
+        }
+
+        .overall-item .circle {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .overall-item .circle svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: rotate(-90deg);
+        }
+
+        .overall-item .circle .pct {
+            position: relative;
+            z-index: 1;
+            font-size: 0.95rem;
+        }
+
+        .overall-item .cat-label {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+            font-size: 0.78rem;
+        }
+
+        /* Export button */
+        .export-btn {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: var(--white);
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .export-btn:hover { background: rgba(255,255,255,0.25); }
+
+        @media (max-width: 768px) {
+            header { padding: 20px; flex-direction: column; gap: 16px; }
+            .summary-bar { padding: 16px 20px; }
+            .dashboard { padding: 0 20px 20px; grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-area">
+        <h1>PHARMAZON24</h1>
+        <p>Monatliches Leistungs-Dashboard</p>
+    </div>
+    <div class="month-selector">
+        <button onclick="changeMonth(-1)">&#8249;</button>
+        <span id="currentMonth"></span>
+        <button onclick="changeMonth(1)">&#8250;</button>
+    </div>
+    <button class="export-btn" onclick="exportData()">Export CSV</button>
+</header>
+
+<div class="summary-bar" id="summaryBar"></div>
+
+<div class="dashboard">
+    <!-- Overall progress -->
+    <div class="card overall-card">
+        <div class="card-header">
+            <h2>Gesamtfortschritt</h2>
+            <div class="badge" id="overallBadge">0%</div>
+        </div>
+        <div class="card-body">
+            <div class="overall-grid" id="overallGrid"></div>
+        </div>
+    </div>
+
+    <!-- Extra Leistungen -->
+    <div class="card overall-card" style="border-top: 4px solid #d97706;">
+        <div class="card-header" style="background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);">
+            <h2>Zusätzliche Leistungen</h2>
+            <div class="badge" id="extraBadge">0</div>
+        </div>
+        <div class="card-body" id="extraLeistungen">
+            <p style="color: var(--text-light); text-align: center; padding: 20px 0;">Keine zusätzlichen Leistungen über dem vereinbarten Umfang</p>
+        </div>
+    </div>
+
+    <!-- Bilder -->
+    <div class="card" id="card-bilder">
+        <div class="card-header">
+            <h2>Bilder</h2>
+            <div class="badge" id="badge-bilder">0 / 20</div>
+        </div>
+        <div class="card-body">
+            <div class="progress-section">
+                <div class="progress-label">
+                    <span>KI-generierte / designte Visuals</span>
+                    <span class="progress-count" id="count-bilder">0 / 20</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill blue" id="bar-bilder" style="width:0%"></div>
+                </div>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Verwendung</span>
+                <span class="detail-value">Social Media, Web, Ads</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Text</span>
+                <span class="detail-value">Ohne Text</span>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-add" onclick="adjust('bilder', 1)">+ Hinzufügen</button>
+                <button class="btn btn-remove" onclick="adjust('bilder', -1)">− Entfernen</button>
+                <button class="btn btn-reset" onclick="reset('bilder')">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Infografiken -->
+    <div class="card" id="card-infografiken">
+        <div class="card-header">
+            <h2>Infografiken</h2>
+            <div class="badge" id="badge-infografiken">0 / 10</div>
+        </div>
+        <div class="card-body">
+            <div class="progress-section">
+                <div class="progress-label">
+                    <span>Banner, Grafiken, One-Page-Flyer</span>
+                    <span class="progress-count" id="count-infografiken">0 / 10</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill blue" id="bar-infografiken" style="width:0%"></div>
+                </div>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Inkl.</span>
+                <span class="detail-value">Banner, Grafiken mit Text, Flyer</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Hinweis</span>
+                <span class="detail-value">1 Flyer = 1 Infografik</span>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-add" onclick="adjust('infografiken', 1)">+ Hinzufügen</button>
+                <button class="btn btn-remove" onclick="adjust('infografiken', -1)">− Entfernen</button>
+                <button class="btn btn-reset" onclick="reset('infografiken')">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kurze Videos -->
+    <div class="card" id="card-kurzeVideos">
+        <div class="card-header">
+            <h2>Kurze Videos</h2>
+            <div class="badge" id="badge-kurzeVideos">0 / 3</div>
+        </div>
+        <div class="card-body">
+            <div class="progress-section">
+                <div class="progress-label">
+                    <span>1–2 Sequenzen</span>
+                    <span class="progress-count" id="count-kurzeVideos">0 / 3</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill blue" id="bar-kurzeVideos" style="width:0%"></div>
+                </div>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Auflösung</span>
+                <span class="detail-value">1080p (720p bei Einschr.)</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Format</span>
+                <span class="detail-value">Plattformspezifisch (z.B. 9:16)</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Ausführung</span>
+                <span class="detail-value">Einfache Bewegtbilder</span>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-add" onclick="adjust('kurzeVideos', 1)">+ Hinzufügen</button>
+                <button class="btn btn-remove" onclick="adjust('kurzeVideos', -1)">− Entfernen</button>
+                <button class="btn btn-reset" onclick="reset('kurzeVideos')">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Längere Videos -->
+    <div class="card" id="card-langeVideos">
+        <div class="card-header">
+            <h2>Längere Videos</h2>
+            <div class="badge" id="badge-langeVideos">0 / 2</div>
+        </div>
+        <div class="card-body">
+            <div class="progress-section">
+                <div class="progress-label">
+                    <span>3–5 Sequenzen</span>
+                    <span class="progress-count" id="count-langeVideos">0 / 2</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill blue" id="bar-langeVideos" style="width:0%"></div>
+                </div>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Auflösung</span>
+                <span class="detail-value">1080p (720p bei Einschr.)</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Szenen</span>
+                <span class="detail-value">Bis zu 5, nach Ermessen</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Ausführung</span>
+                <span class="detail-value">Ohne aufwendige Postproduktion</span>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-add" onclick="adjust('langeVideos', 1)">+ Hinzufügen</button>
+                <button class="btn btn-remove" onclick="adjust('langeVideos', -1)">− Entfernen</button>
+                <button class="btn btn-reset" onclick="reset('langeVideos')">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carousel-Posts -->
+    <div class="card" id="card-carousels">
+        <div class="card-header">
+            <h2>Carousel-Posts</h2>
+            <div class="badge" id="badge-carousels">0 / 4</div>
+        </div>
+        <div class="card-body">
+            <div class="progress-section">
+                <div class="progress-label">
+                    <span>Je 6 zusammenhängende Slides</span>
+                    <span class="progress-count" id="count-carousels">0 / 4</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill blue" id="bar-carousels" style="width:0%"></div>
+                </div>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Slides pro Post</span>
+                <span class="detail-value">6 Slides</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Gesamt-Slides</span>
+                <span class="detail-value" id="totalSlides">0 / 24</span>
+            </div>
+            <div class="btn-row">
+                <button class="btn btn-add" onclick="adjust('carousels', 1)">+ Hinzufügen</button>
+                <button class="btn btn-remove" onclick="adjust('carousels', -1)">− Entfernen</button>
+                <button class="btn btn-reset" onclick="reset('carousels')">Reset</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    Pharmazon24 GmbH &mdash; Leistungs-Dashboard &copy; 2026
+</footer>
+
+<script>
+    const categories = {
+        bilder:        { name: 'Bilder',          max: 20 },
+        infografiken:  { name: 'Infografiken',    max: 10 },
+        kurzeVideos:   { name: 'Kurze Videos',    max: 3  },
+        langeVideos:   { name: 'Längere Videos',  max: 2  },
+        carousels:     { name: 'Carousel-Posts',   max: 4  }
+    };
+
+    let currentDate = new Date();
+    let data = {};
+
+    function monthKey(d) {
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    }
+
+    function loadData() {
+        const stored = localStorage.getItem('pharmazon24_dashboard');
+        if (stored) data = JSON.parse(stored);
+    }
+
+    function saveData() {
+        localStorage.setItem('pharmazon24_dashboard', JSON.stringify(data));
+    }
+
+    function getMonthData() {
+        const key = monthKey(currentDate);
+        if (!data[key]) {
+            data[key] = {};
+            for (const cat in categories) data[key][cat] = 0;
+        }
+        return data[key];
+    }
+
+    function changeMonth(dir) {
+        currentDate.setMonth(currentDate.getMonth() + dir);
+        render();
+    }
+
+    function adjust(cat, delta) {
+        const md = getMonthData();
+        md[cat] = Math.max(0, md[cat] + delta);
+        saveData();
+        render();
+    }
+
+    function reset(cat) {
+        const md = getMonthData();
+        md[cat] = 0;
+        saveData();
+        render();
+    }
+
+    function render() {
+        const md = getMonthData();
+        const months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+        document.getElementById('currentMonth').textContent = `${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+
+        let totalDone = 0, totalMax = 0, totalExtra = 0;
+        const extras = {};
+
+        // Update each category
+        for (const cat in categories) {
+            const cur = md[cat];
+            const max = categories[cat].max;
+            const extra = Math.max(0, cur - max);
+            const effectivePct = Math.min(100, Math.round((cur / max) * 100));
+
+            totalDone += cur;
+            totalMax += max;
+            totalExtra += extra;
+            extras[cat] = extra;
+
+            // Badge
+            document.getElementById(`badge-${cat}`).textContent = `${cur} / ${max}`;
+            // Count
+            document.getElementById(`count-${cat}`).textContent = `${cur} / ${max}`;
+            // Bar
+            const bar = document.getElementById(`bar-${cat}`);
+            bar.style.width = effectivePct + '%';
+            bar.className = 'progress-fill ' + (effectivePct >= 100 ? 'complete' : effectivePct >= 50 ? 'blue' : effectivePct > 0 ? 'amber' : 'blue');
+        }
+
+        // Carousel total slides
+        const carouselSlides = md.carousels * 6;
+        const carouselSlidesMax = 4 * 6;
+        document.getElementById('totalSlides').textContent = `${carouselSlides} / ${carouselSlidesMax}`;
+
+        // Summary bar
+        const overallPct = Math.round((totalDone / totalMax) * 100);
+        const videosTotal = md.kurzeVideos + md.langeVideos;
+        document.getElementById('summaryBar').innerHTML = `
+            <div class="summary-card">
+                <div class="label">Gesamtfortschritt</div>
+                <div class="value">${overallPct}%</div>
+                <div class="sub">${Math.min(totalDone, totalMax)} von ${totalMax} Leistungen</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Bilder & Grafiken</div>
+                <div class="value">${md.bilder + md.infografiken}</div>
+                <div class="sub">von 30 gesamt</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Videos gesamt</div>
+                <div class="value">${videosTotal}</div>
+                <div class="sub">von 5 gesamt</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Carousel-Posts</div>
+                <div class="value">${md.carousels}</div>
+                <div class="sub">von 4 gesamt</div>
+            </div>
+        `;
+
+        // Overall badge
+        document.getElementById('overallBadge').textContent = overallPct + '%';
+
+        // Overall grid with circle charts
+        const grid = document.getElementById('overallGrid');
+        grid.innerHTML = '';
+        for (const cat in categories) {
+            const cur = md[cat];
+            const max = categories[cat].max;
+            const effectivePct = Math.min(100, Math.round((cur / max) * 100));
+            const r = 30, c = 2 * Math.PI * r;
+            const offset = c - (c * effectivePct / 100);
+            const color = effectivePct >= 100 ? '#16a34a' : effectivePct >= 50 ? '#1F45AB' : effectivePct > 0 ? '#d97706' : '#e5e7eb';
+
+            grid.innerHTML += `
+                <div class="overall-item">
+                    <div class="circle">
+                        <svg width="72" height="72" viewBox="0 0 72 72">
+                            <circle cx="36" cy="36" r="${r}" fill="none" stroke="#e5e7eb" stroke-width="6"/>
+                            <circle cx="36" cy="36" r="${r}" fill="none" stroke="${color}" stroke-width="6"
+                                stroke-dasharray="${c}" stroke-dashoffset="${offset}" stroke-linecap="round"/>
+                        </svg>
+                        <span class="pct">${effectivePct}%</span>
+                    </div>
+                    <div class="cat-label">${categories[cat].name}</div>
+                </div>
+            `;
+        }
+
+        // Extra Leistungen
+        const extraSection = document.getElementById('extraLeistungen');
+        document.getElementById('extraBadge').textContent = totalExtra;
+
+        if (totalExtra === 0) {
+            extraSection.innerHTML = '<p style="color: var(--text-light); text-align: center; padding: 20px 0;">Keine zusätzlichen Leistungen über dem vereinbarten Umfang</p>';
+        } else {
+            let html = '<div style="display: grid; gap: 12px;">';
+            for (const cat in extras) {
+                if (extras[cat] > 0) {
+                    html += `
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fffbeb; border-left: 4px solid #d97706; border-radius: 6px;">
+                            <span style="font-weight: 500;">${categories[cat].name}</span>
+                            <span style="background: #d97706; color: white; padding: 4px 12px; border-radius: 12px; font-weight: 600; font-size: 0.9rem;">+${extras[cat]}</span>
+                        </div>
+                    `;
+                }
+            }
+            html += '</div>';
+            extraSection.innerHTML = html;
+        }
+    }
+
+    function exportData() {
+        const md = getMonthData();
+        const months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+        const monthName = `${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+        let csv = 'Kategorie,Erledigt,Maximum,Prozent\n';
+        for (const cat in categories) {
+            const cur = md[cat];
+            const max = categories[cat].max;
+            csv += `${categories[cat].name},${cur},${max},${Math.round(cur/max*100)}%\n`;
+        }
+        const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Pharmazon24_Leistungen_${monthKey(currentDate)}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    loadData();
+    render();
+</script>
+
+</body>
+</html>
