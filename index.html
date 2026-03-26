@@ -1144,6 +1144,7 @@
         const extras = {};
         const key = monthKey(currentDate);
         const manualExtrasThisMonth = manualExtras[key] || {};
+        const trackingCats = ['bilder', 'infografiken', 'kurzeVideos', 'langeVideos', 'carousels'];
 
         for (const cat in categories) {
             const cur = md[cat];
@@ -1158,12 +1159,15 @@
             extras[cat] = extra;
             totalExtraCost += extra * categories[cat].price;
 
-            document.getElementById('badge-' + cat).textContent = cur + ' / ' + max;
-            document.getElementById('count-' + cat).textContent = cur + ' / ' + max;
+            // Update DOM only for tracking categories
+            if (trackingCats.includes(cat)) {
+                document.getElementById('badge-' + cat).textContent = cur + ' / ' + max;
+                document.getElementById('count-' + cat).textContent = cur + ' / ' + max;
 
-            const bar = document.getElementById('bar-' + cat);
-            bar.style.width = pct + '%';
-            bar.className = 'progress-fill ' + (pct >= 100 ? 'complete' : pct >= 50 ? 'blue' : pct > 0 ? 'amber' : 'blue');
+                const bar = document.getElementById('bar-' + cat);
+                bar.style.width = pct + '%';
+                bar.className = 'progress-fill ' + (pct >= 100 ? 'complete' : pct >= 50 ? 'blue' : pct > 0 ? 'amber' : 'blue');
+            }
         }
 
         document.getElementById('totalSlides').textContent = (md.carousels * 6) + ' / 24';
@@ -1180,10 +1184,10 @@
         // Overall badge
         document.getElementById('overallBadge').textContent = overallPct + '%';
 
-        // Circle charts
+        // Circle charts (only for tracking categories)
         const grid = document.getElementById('overallGrid');
         grid.innerHTML = '';
-        for (const cat in categories) {
+        for (const cat of trackingCats) {
             const cur = md[cat];
             const max = categories[cat].max;
             const pct = Math.min(100, Math.round((cur / max) * 100));
