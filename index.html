@@ -1037,6 +1037,7 @@
 
     // Check existing session (24h TTL)
     function checkSession() {
+        editMode = false; // Default: nicht authentifiziert
         const session = localStorage.getItem('p24_session');
         if (session) {
             const { t } = JSON.parse(session);
