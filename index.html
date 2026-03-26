@@ -428,6 +428,18 @@
     </div>
 </div>
 
+<!-- Confirm Reset Modal -->
+<div class="modal-overlay" id="confirmModal">
+    <div class="modal-box">
+        <h2>Reset bestätigen</h2>
+        <p id="confirmText">Wirklich zurücksetzen? Diese Aktion kann nicht rückgängig gemacht werden.</p>
+        <div class="modal-btns">
+            <button class="btn-primary" onclick="confirmReset()" style="background: #dc2626;">Ja, zurücksetzen</button>
+            <button class="btn-cancel" onclick="closeConfirmModal()">Abbrechen</button>
+        </div>
+    </div>
+</div>
+
 <header>
     <div class="logo-area">
         <!-- NIU ERA Logo as SVG -->
@@ -791,6 +803,29 @@
 
     function closeModal() {
         document.getElementById('pwModal').classList.remove('active');
+    }
+
+    // Reset confirmation
+    let resetCategory = null;
+
+    function resetCat(cat) {
+        resetCategory = cat;
+        document.getElementById('confirmText').textContent = 'Wirklich ' + categories[cat].name + ' zurücksetzen? Diese Aktion kann nicht rückgängig gemacht werden.';
+        document.getElementById('confirmModal').classList.add('active');
+    }
+
+    function confirmReset() {
+        if (resetCategory) {
+            getMonthData()[resetCategory] = 0;
+            saveData();
+            render();
+            closeConfirmModal();
+        }
+    }
+
+    function closeConfirmModal() {
+        document.getElementById('confirmModal').classList.remove('active');
+        resetCategory = null;
     }
 
     async function tryLogin() {
