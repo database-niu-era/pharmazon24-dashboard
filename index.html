@@ -430,7 +430,21 @@
 
 <header>
     <div class="logo-area">
-        <img src="logo.png" alt="NIU ERA">
+        <!-- NIU ERA Logo as SVG -->
+        <svg width="56" height="56" viewBox="0 0 200 200" style="flex-shrink: 0;">
+            <defs>
+                <linearGradient id="niuGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#FF5722;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#FF6F3B;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <!-- Outer circle -->
+            <circle cx="100" cy="60" r="38" fill="url(#niuGrad)"/>
+            <!-- Inner white element -->
+            <path d="M 85 45 Q 85 35 95 35 Q 105 35 105 45 L 105 75 Q 105 85 95 85 Q 85 85 85 75 Z" fill="white" opacity="0.9"/>
+            <!-- Bottom curve -->
+            <path d="M 70 110 Q 70 160 100 160 Q 130 160 130 110" stroke="white" stroke-width="14" fill="none" stroke-linecap="round"/>
+        </svg>
         <div class="title-block">
             <h1>PHARMAZON24</h1>
             <p>Monatliches Leistungs-Dashboard</p>
@@ -461,13 +475,14 @@
         </div>
     </div>
 
-    <!-- Zusatzleistungen (Überschreitungen) -->
-    <div class="card overall-card" id="extraCard" style="border-top: 4px solid #d97706;">
-        <div class="card-header" style="background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);">
-            <h2>Zusatzleistungen (kostenpflichtig)</h2>
+    <!-- Zusatzleistungen (Überschreitungen) - Collapsible Dropdown -->
+    <div class="card overall-card" id="extraCard" style="border-top: 4px solid #FF5722;">
+        <div class="card-header" style="background: linear-gradient(135deg, #FF5722 0%, #FF7043 100%); cursor: pointer;" onclick="toggleExtraCard()">
+            <h2 style="flex: 1;">Zusatzleistungen (kostenpflichtig)</h2>
             <div class="badge" id="extraCostBadge">0,00 €</div>
+            <span style="margin-left: 12px; font-size: 1.2rem; transition: transform 0.3s;" id="expandArrow">▼</span>
         </div>
-        <div class="card-body" id="extraLeistungen">
+        <div class="card-body" id="extraLeistungen" style="display: none;">
             <p style="color: var(--text-light); text-align: center; padding: 16px 0;">Keine Leistungen über dem vereinbarten Umfang</p>
         </div>
     </div>
@@ -650,7 +665,7 @@
             </div>
             <div class="detail-row">
                 <span class="detail-label">Zusatzpreis</span>
-                <span class="detail-value">65 € / Stk.</span>
+                <span class="detail-value">90 € / Stk.</span>
             </div>
             <div class="btn-row">
                 <button class="btn btn-add" onclick="adjust('carousels', 1)">+ Hinzufügen</button>
@@ -740,7 +755,7 @@
         infografiken: { name: 'Infografiken',   max: 10, price: 80  },
         kurzeVideos:  { name: 'Kurze Videos',   max: 3,  price: 75  },
         langeVideos:  { name: 'Längere Videos', max: 2,  price: 150 },
-        carousels:    { name: 'Carousel-Posts',  max: 4,  price: 65  }
+        carousels:    { name: 'Carousel-Posts',  max: 4,  price: 90  }
     };
 
     // ===== AUTH (SHA-256 hashed password) =====
@@ -953,6 +968,16 @@
             html += '</div>';
             extraSection.innerHTML = html;
         }
+    }
+
+    let extraCardOpen = false;
+
+    function toggleExtraCard() {
+        const extraCard = document.getElementById('extraLeistungen');
+        const arrow = document.getElementById('expandArrow');
+        extraCardOpen = !extraCardOpen;
+        extraCard.style.display = extraCardOpen ? 'block' : 'none';
+        arrow.style.transform = extraCardOpen ? 'rotate(180deg)' : 'rotate(0deg)';
     }
 
     function exportData() {
