@@ -1016,7 +1016,7 @@
         const hash = await hashPassword(pw);
 
         // Direct comparison for simplicity + security
-        if (pw === 'ILoveYouTheMost.3105') {
+        if (pw === '1252') {
             editMode = true;
             localStorage.setItem('p24_session', JSON.stringify({ t: Date.now() }));
             closeModal();
@@ -1111,6 +1111,10 @@
     }
 
     function addManualExtra(cat, delta) {
+        if (!editMode) {
+            alert('Diese Funktion ist nur im Edit-Mode verfügbar. Bitte melden Sie sich an.');
+            return;
+        }
         const key = monthKey(currentDate);
         if (!manualExtras[key]) manualExtras[key] = {};
         if (!manualExtras[key][cat]) manualExtras[key][cat] = 0;
