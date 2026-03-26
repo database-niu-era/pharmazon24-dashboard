@@ -442,14 +442,16 @@
 
 <header>
     <div class="logo-area">
-        <!-- NIU ERA Logo as SVG -->
-        <svg width="56" height="56" viewBox="0 0 200 200" style="flex-shrink: 0;">
+        <!-- NIU ERA Logo as SVG - Improved Visibility -->
+        <svg width="72" height="72" viewBox="0 0 200 200" style="flex-shrink: 0; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));">
             <defs>
                 <linearGradient id="niuGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" style="stop-color:#FF5722;stop-opacity:1" />
                     <stop offset="100%" style="stop-color:#FF6F3B;stop-opacity:1" />
                 </linearGradient>
             </defs>
+            <!-- Background circle for better visibility -->
+            <circle cx="100" cy="100" r="95" fill="white" opacity="0.95"/>
             <!-- Outer circle -->
             <circle cx="100" cy="60" r="38" fill="url(#niuGrad)"/>
             <!-- Inner white element -->
@@ -741,46 +743,186 @@
                 <!-- Branding -->
                 <div>
                     <h3 style="font-size: 0.9rem; margin-bottom: 10px; color: var(--primary-dark);">Branding</h3>
-                    <div class="detail-row"><span class="detail-label">Logo Basic</span><span class="detail-value">90–150 €</span></div>
-                    <div class="detail-row"><span class="detail-label">Logo Pro</span><span class="detail-value">270–350 €</span></div>
-                    <div class="detail-row"><span class="detail-label">Brand Identity</span><span class="detail-value">500–650 €</span></div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">Logo Basic</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">90 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('logo_basic', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('logo_basic', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">Logo Pro</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">270 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('logo_pro', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('logo_pro', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">Brand Identity</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">500 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('brand_id', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('brand_id', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
                 </div>
                 <!-- Webdesign -->
                 <div>
                     <h3 style="font-size: 0.9rem; margin-bottom: 10px; color: var(--primary-dark);">Webdesign</h3>
-                    <div class="detail-row"><span class="detail-label">Landing Page</span><span class="detail-value">150–200 €</span></div>
-                    <div class="detail-row"><span class="detail-label">One-Pager</span><span class="detail-value">220–280 €</span></div>
-                    <div class="detail-row"><span class="detail-label">Multi-Page Website</span><span class="detail-value">450–600 €</span></div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">Landing Page</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">150 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('landing_page', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('landing_page', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">One-Pager</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">220 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('one_pager', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('one_pager', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">Multi-Page Website</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">450 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('website', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('website', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
                 </div>
                 <!-- Print & Layout -->
                 <div>
                     <h3 style="font-size: 0.9rem; margin-bottom: 10px; color: var(--primary-dark);">Print & Layout</h3>
-                    <div class="detail-row"><span class="detail-label">Flyer / Postkarte</span><span class="detail-value">140–180 €</span></div>
-                    <div class="detail-row"><span class="detail-label">Broschüre 4 Seiten</span><span class="detail-value">220–300 €</span></div>
-                    <div class="detail-row"><span class="detail-label">Trifold Broschüre</span><span class="detail-value">300–380 €</span></div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">Flyer / Postkarte</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">140 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('flyer', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('flyer', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">Broschüre 4 Seiten</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">220 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('broschur_4', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('broschur_4', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">Trifold Broschüre</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">300 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('broschur_tri', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('broschur_tri', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
                 </div>
                 <!-- Digital -->
                 <div>
                     <h3 style="font-size: 0.9rem; margin-bottom: 10px; color: var(--primary-dark);">Digital & Präsentation</h3>
-                    <div class="detail-row"><span class="detail-label">E-Mail Newsletter</span><span class="detail-value">120–180 €</span></div>
-                    <div class="detail-row"><span class="detail-label">Präsentation (bis 15 Slides)</span><span class="detail-value">250–350 €</span></div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">E-Mail Newsletter</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">120 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('newsletter', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('newsletter', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">Präsentation (bis 15 Slides)</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">250 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('presentation', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('presentation', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
                 </div>
                 <!-- Merchandise -->
                 <div>
                     <h3 style="font-size: 0.9rem; margin-bottom: 10px; color: var(--primary-dark);">Merchandise & Sonstiges</h3>
-                    <div class="detail-row"><span class="detail-label">Sticker / Aufkleber</span><span class="detail-value">80–120 €</span></div>
-                    <div class="detail-row"><span class="detail-label">Visitenkarte</span><span class="detail-value">80–120 €</span></div>
-                    <div class="detail-row"><span class="detail-label">Banner / Roll-Up</span><span class="detail-value">60–100 €</span></div>
-                    <div class="detail-row"><span class="detail-label">T-Shirt Design mittel</span><span class="detail-value">180–350 €</span></div>
-                    <div class="detail-row"><span class="detail-label">T-Shirt Design komplex</span><span class="detail-value">400–700 €</span></div>
-                    <div class="detail-row"><span class="detail-label">Verpackungsdesign mittel</span><span class="detail-value">300–500 €</span></div>
-                    <div class="detail-row"><span class="detail-label">Verpackungsdesign komplex</span><span class="detail-value">500–800 €</span></div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">Sticker / Aufkleber</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">80 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('sticker', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('sticker', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">Visitenkarte</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">80 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('card', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('card', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">Banner / Roll-Up</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">60 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('banner', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('banner', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">T-Shirt Design mittel</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">180 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('shirt_mid', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('shirt_mid', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">T-Shirt Design komplex</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">400 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('shirt_complex', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('shirt_complex', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">Verpackungsdesign mittel</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">300 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('packaging_mid', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('packaging_mid', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">Verpackungsdesign komplex</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">500 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('packaging_complex', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('packaging_complex', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
                 </div>
                 <!-- Add-ons -->
                 <div>
                     <h3 style="font-size: 0.9rem; margin-bottom: 10px; color: var(--primary-dark);">Add-Ons</h3>
-                    <div class="detail-row"><span class="detail-label">Zusätzliche Revision</span><span class="detail-value">19 € / Runde</span></div>
-                    <div class="detail-row"><span class="detail-label">Quelldateien (AI / PSD)</span><span class="detail-value">49 €</span></div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">Zusätzliche Revision</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">19 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('revision', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('revision', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
+                    <div class="detail-row" style="justify-content: space-between; align-items: center;">
+                        <span class="detail-label">Quelldateien (AI / PSD)</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="detail-value">49 €</span>
+                            <button class="btn btn-add" onclick="addManualExtra('source_files', 1)" style="padding: 4px 8px; font-size: 0.85rem;">+</button>
+                            <button class="btn btn-remove" onclick="addManualExtra('source_files', -1)" style="padding: 4px 8px; font-size: 0.85rem;">−</button>
+                        </div>
+                    </div>
                     <div class="detail-row"><span class="detail-label">Eilauftrag (24-48 h)</span><span class="detail-value">+ 35 %</span></div>
                 </div>
             </div>
@@ -802,7 +944,27 @@
         infografiken: { name: 'Infografiken',   max: 10, price: 80  },
         kurzeVideos:  { name: 'Kurze Videos',   max: 3,  price: 75  },
         langeVideos:  { name: 'Längere Videos', max: 2,  price: 150 },
-        carousels:    { name: 'Carousel-Posts',  max: 4,  price: 90  }
+        carousels:    { name: 'Carousel-Posts',  max: 4,  price: 90  },
+        logo_basic:   { name: 'Logo Basic',      max: 0, price: 90  },
+        logo_pro:     { name: 'Logo Pro',        max: 0, price: 270 },
+        brand_id:     { name: 'Brand Identity',  max: 0, price: 500 },
+        landing_page: { name: 'Landing Page',    max: 0, price: 150 },
+        one_pager:    { name: 'One-Pager',       max: 0, price: 220 },
+        website:      { name: 'Multi-Page Website', max: 0, price: 450 },
+        flyer:        { name: 'Flyer / Postkarte', max: 0, price: 140 },
+        broschur_4:   { name: 'Broschüre 4 Seiten', max: 0, price: 220 },
+        broschur_tri: { name: 'Trifold Broschüre',  max: 0, price: 300 },
+        newsletter:   { name: 'E-Mail Newsletter',  max: 0, price: 120 },
+        presentation:{ name: 'Präsentation',     max: 0, price: 250 },
+        sticker:      { name: 'Sticker / Aufkleber', max: 0, price: 80 },
+        card:         { name: 'Visitenkarte',     max: 0, price: 80 },
+        banner:       { name: 'Banner / Roll-Up',  max: 0, price: 60 },
+        shirt_mid:    { name: 'T-Shirt Design mittel', max: 0, price: 180 },
+        shirt_complex:{ name: 'T-Shirt Design komplex', max: 0, price: 400 },
+        packaging_mid:{ name: 'Verpackungsdesign mittel', max: 0, price: 300 },
+        packaging_complex: { name: 'Verpackungsdesign komplex', max: 0, price: 500 },
+        revision:     { name: 'Zusätzliche Revision',   max: 0, price: 19 },
+        source_files: { name: 'Quelldateien (AI / PSD)', max: 0, price: 49 }
     };
 
     // ===== AUTH (SHA-256 hashed password) =====
