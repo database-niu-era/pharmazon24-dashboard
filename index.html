@@ -1207,13 +1207,26 @@
             for (const cat in extras) {
                 if (extras[cat] > 0) {
                     const cost = extras[cat] * categories[cat].price;
-                    html += '<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f9f9f9; border-radius: 6px;"><div><span style="font-weight: 500;">' + extras[cat] + 'x ' + categories[cat].name + '</span><br/><span style="font-size: 0.85rem; color: var(--text-light);">(' + categories[cat].price + ' € / Stk.) = ' + cost.toFixed(2) + ' €</span></div><div style="display: flex; gap: 6px;"><button class="btn btn-add" onclick="addManualExtra(\'' + cat + '\', 1)" style="padding: 6px 10px; font-size: 0.9rem;">+</button><button class="btn btn-remove" onclick="addManualExtra(\'' + cat + '\', -1)" style="padding: 6px 10px; font-size: 0.9rem;">−</button></div></div>';
+                    const buttonsHtml = editMode ? '<div style="display: flex; gap: 6px;"><button class="btn btn-add" onclick="addManualExtra(\'' + cat + '\', 1)" style="padding: 6px 10px; font-size: 0.9rem;">+</button><button class="btn btn-remove" onclick="addManualExtra(\'' + cat + '\', -1)" style="padding: 6px 10px; font-size: 0.9rem;">−</button></div>' : '';
+                    html += '<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f9f9f9; border-radius: 6px;"><div><span style="font-weight: 500;">' + extras[cat] + 'x ' + categories[cat].name + '</span><br/><span style="font-size: 0.85rem; color: var(--text-light);">(' + categories[cat].price + ' € / Stk.) = ' + cost.toFixed(2) + ' €</span></div>' + buttonsHtml + '</div>';
                 }
             }
             html += '<div style="display: flex; justify-content: flex-end; padding-top: 12px; border-top: 2px solid #e5e7eb; margin-top: 6px;"><span style="font-weight: 700; font-size: 1rem; color: #FF5722;">Gesamt: ' + totalExtraCost.toFixed(2) + ' € netto</span></div>';
             html += '</div>';
             extraServicesList.innerHTML = html;
         }
+
+        // Alle Bearbeitungs-Buttons basierend auf editMode anzeigen/verstecken
+        const allEditButtons = document.querySelectorAll('[onclick*="addManualExtra"], [onclick*="adjust"]');
+        allEditButtons.forEach(btn => {
+            btn.style.display = editMode ? 'inline-flex' : 'none';
+        });
+
+        // Auch .btn-row Elemente verstecken
+        const btnRows = document.querySelectorAll('.btn-row');
+        btnRows.forEach(row => {
+            row.style.display = editMode ? 'flex' : 'none';
+        });
     }
 
     let extraCardOpen = false;
