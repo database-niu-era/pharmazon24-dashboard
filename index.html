@@ -1045,7 +1045,6 @@
                 editMode = true;
                 document.getElementById('editToggle').textContent = 'Abmelden';
                 document.getElementById('editToggle').classList.add('active');
-                document.querySelectorAll('.btn-row').forEach(el => el.style.display = 'flex');
             } else {
                 localStorage.removeItem('p24_session');
             }
