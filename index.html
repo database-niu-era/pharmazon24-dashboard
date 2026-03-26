@@ -1103,6 +1103,10 @@
     }
 
     function adjust(cat, delta) {
+        if (!editMode) {
+            alert('Diese Funktion ist nur im Edit-Mode verfügbar. Bitte melden Sie sich an.');
+            return;
+        }
         const md = getMonthData();
         md[cat] = Math.max(0, md[cat] + delta);
         playSound(delta > 0 ? 'add' : 'remove');
