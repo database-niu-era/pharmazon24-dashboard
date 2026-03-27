@@ -443,7 +443,7 @@
 <header>
     <div class="logo-area">
         <!-- NIU ERA Logo -->
-        <img src="niu-era-logo.png" alt="niU ERA" style="height: 60px; width: auto; flex-shrink: 0;">
+        <img src="niu-era-logo.svg" alt="niU ERA" style="height: 60px; width: auto; flex-shrink: 0;">
         <div class="title-block">
             <h1>PHARMAZON24</h1>
             <p>Monatliches Leistungs-Dashboard</p>
@@ -1022,7 +1022,7 @@
             closeModal();
             document.getElementById('editToggle').textContent = 'Abmelden';
             document.getElementById('editToggle').classList.add('active');
-            document.querySelectorAll('.btn-row').forEach(el => el.style.display = 'flex');
+            render();
         } else {
             document.getElementById('pwError').style.display = 'block';
             document.getElementById('pwInput').value = '';
