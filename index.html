@@ -1821,12 +1821,16 @@
 
     // ===== REPOSITORY SYNC FUNCTIONS =====
 
-    // Load data.json from repository at startup
+    let lastDataHash = null;
+
+    // Load data.json from repository with cache-busting
     async function loadFromRepository() {
         try {
-            const response = await fetch('data.json');
+            const timestamp = new Date().getTime();
+            const response = await fetch(`data.json?v=${timestamp}`);
             if (response.ok) {
                 const repoData = await response.json();
+                lastDataHash = JSON.stringify(repoData);
                 const md = getMonthData();
                 for (const cat in categories) {
                     if (repoData[cat] !== undefined) {
@@ -1839,6 +1843,36 @@
         } catch (err) {
             console.log('ℹ️ Kein data.json im Repository oder offline', err.message);
         }
+    }
+
+    // Auto-sync: Check for updates every 30 seconds
+    function startAutoSync() {
+        setInterval(async () => {
+            try {
+                const timestamp = new Date().getTime();
+                const response = await fetch(`data.json?v=${timestamp}`);
+                if (response.ok) {
+                    const repoData = await response.json();
+                    const newHash = JSON.stringify(repoData);
+
+                    // Only update if data changed
+                    if (newHash !== lastDataHash) {
+                        console.log('🔄 Neue Änderungen vom Repository erkannt!');
+                        lastDataHash = newHash;
+                        const md = getMonthData();
+                        for (const cat in categories) {
+                            if (repoData[cat] !== undefined) {
+                                md[cat] = repoData[cat];
+                            }
+                        }
+                        saveData();
+                        render();
+                    }
+                }
+            } catch (err) {
+                // Silently fail if offline or error
+            }
+        }, 30000); // Check every 30 seconds
     }
 
     // Export current data as JSON for manual git commit
@@ -1882,7 +1916,8 @@
 
     // ===== INIT =====
     loadData();
-    loadFromRepository(); // Try to load data.json from repository
+    loadFromRepository(); // Try to load data.json from repository (with cache-busting)
+    startAutoSync(); // Auto-check for updates every 30 seconds
     checkSession();
     preventIOSZoom();
     render();
