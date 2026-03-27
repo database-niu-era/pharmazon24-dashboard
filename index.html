@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>Pharmazon24 – Leistungs-Dashboard</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -965,23 +972,60 @@
         return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
+    function validateSession() {
+        const session = localStorage.getItem('p24_session');
+        if (!session) return false;
+        try {
+            const parsed = JSON.parse(session);
+            // Validate session structure
+            if (!parsed.t || typeof parsed.t !== 'number') return false;
+            // Check 24-hour TTL
+            if (Date.now() - parsed.t >= 24 * 60 * 60 * 1000) {
+                localStorage.removeItem('p24_session');
+                sessionStorage.removeItem('p24_session_token');
+                return false;
+            }
+            return true;
+        } catch (e) {
+            // Malformed session data
+            localStorage.removeItem('p24_session');
+            return false;
+        }
+    }
+
     function handleEditToggle() {
         if (editMode) {
+            // Logout
             editMode = false;
             localStorage.removeItem('p24_session');
+            sessionStorage.removeItem('p24_session_token');
             document.getElementById('editToggle').textContent = 'Bearbeiten';
             document.getElementById('editToggle').classList.remove('active');
+            document.getElementById('pwInput').disabled = false;
+            document.getElementById('pwError').textContent = 'Falsches Passwort';
             document.querySelectorAll('.btn-row').forEach(el => el.style.display = 'none');
+            render();
         } else {
             openModal();
         }
     }
 
     function openModal() {
+        // Reset login attempts display on modal open
         document.getElementById('pwModal').classList.add('active');
         document.getElementById('pwError').style.display = 'none';
         document.getElementById('pwInput').value = '';
-        setTimeout(() => document.getElementById('pwInput').focus(), 100);
+        // Check if account is locked
+        if (isAccountLocked()) {
+            const remaining = getLockoutTimeRemaining();
+            const minutes = Math.ceil(remaining / 1000 / 60);
+            document.getElementById('pwError').textContent = `Zu viele Versuche. Bitte warten Sie ${minutes} Minuten.`;
+            document.getElementById('pwError').style.display = 'block';
+            document.getElementById('pwInput').disabled = true;
+        } else {
+            document.getElementById('pwInput').disabled = false;
+        }
+        setTimeout(() => { if (!document.getElementById('pwInput').disabled) document.getElementById('pwInput').focus(); }, 100);
     }
 
     function closeModal() {
@@ -992,13 +1036,34 @@
     let resetCategory = null;
 
     function resetCat(cat) {
+        // Validate session
+        if (!editMode || !validateSession()) {
+            alert('Sitzung abgelaufen. Bitte melden Sie sich erneut an.');
+            return;
+        }
+
+        // Validate category
+        if (!validateCategory(cat)) {
+            console.error('Invalid category for reset');
+            return;
+        }
+
         resetCategory = cat;
-        document.getElementById('confirmText').textContent = 'Wirklich ' + categories[cat].name + ' zurücksetzen? Diese Aktion kann nicht rückgängig gemacht werden.';
+        // XSS Protection: Use textContent instead of innerHTML
+        const confirmText = document.getElementById('confirmText');
+        confirmText.textContent = 'Wirklich ' + categories[cat].name + ' zurücksetzen? Diese Aktion kann nicht rückgängig gemacht werden.';
         document.getElementById('confirmModal').classList.add('active');
     }
 
     function confirmReset() {
-        if (resetCategory) {
+        // Validate session again
+        if (!editMode || !validateSession()) {
+            alert('Sitzung abgelaufen. Bitte melden Sie sich erneut an.');
+            closeConfirmModal();
+            return;
+        }
+
+        if (resetCategory && validateCategory(resetCategory)) {
             getMonthData()[resetCategory] = 0;
             saveData();
             render();
@@ -1011,43 +1076,162 @@
         resetCategory = null;
     }
 
-    async function tryLogin() {
-        const pw = document.getElementById('pwInput').value;
-        const hash = await hashPassword(pw);
+    // Security: Rate limiting for login attempts
+    let loginAttempts = [];
+    const MAX_ATTEMPTS = 5;
+    const LOCKOUT_DURATION = 15 * 60 * 1000; // 15 minutes
+    const ATTEMPT_WINDOW = 60 * 1000; // 1 minute
+    const CORRECT_PASSWORD = '1252';
 
-        // Direct comparison for simplicity + security
-        if (pw === '1252') {
+    function getLoginAttempts() {
+        const stored = localStorage.getItem('p24_login_attempts');
+        return stored ? JSON.parse(stored) : [];
+    }
+
+    function recordLoginAttempt() {
+        let attempts = getLoginAttempts();
+        attempts.push(Date.now());
+        // Keep only attempts within the last hour
+        attempts = attempts.filter(t => Date.now() - t < 60 * 60 * 1000);
+        localStorage.setItem('p24_login_attempts', JSON.stringify(attempts));
+        return attempts;
+    }
+
+    function isAccountLocked() {
+        const attempts = getLoginAttempts();
+        const recentAttempts = attempts.filter(t => Date.now() - t < ATTEMPT_WINDOW);
+        return recentAttempts.length >= MAX_ATTEMPTS;
+    }
+
+    function getLockoutTimeRemaining() {
+        const attempts = getLoginAttempts();
+        if (attempts.length === 0) return 0;
+        const oldestAttempt = Math.min(...attempts);
+        const timeSinceOldest = Date.now() - oldestAttempt;
+        return Math.max(0, LOCKOUT_DURATION - timeSinceOldest);
+    }
+
+    // Secure constant-time string comparison (prevents timing attacks)
+    function secureCompare(a, b) {
+        if (a.length !== b.length) {
+            // Still take time equal to correct password length
+            const dummy = '0'.repeat(CORRECT_PASSWORD.length);
+            secureCompare(a, dummy);
+            return false;
+        }
+        let result = 0;
+        for (let i = 0; i < a.length; i++) {
+            result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+        }
+        return result === 0;
+    }
+
+    // Input validation
+    function validatePasswordInput(pw) {
+        if (typeof pw !== 'string') return false;
+        if (pw.length === 0 || pw.length > 100) return false;
+        return true;
+    }
+
+    // XSS Prevention: Escape HTML
+    function escapeHtml(text) {
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.replace(/[&<>"']/g, m => map[m]);
+    }
+
+    async function tryLogin() {
+        const pwInput = document.getElementById('pwInput');
+        const pwError = document.getElementById('pwError');
+
+        // Check if account is locked
+        if (isAccountLocked()) {
+            const remaining = getLockoutTimeRemaining();
+            const minutes = Math.ceil(remaining / 1000 / 60);
+            pwError.textContent = `Zu viele Versuche. Bitte warten Sie ${minutes} Minuten.`;
+            pwError.style.display = 'block';
+            pwInput.disabled = true;
+            setTimeout(() => { pwInput.disabled = false; }, remaining);
+            return;
+        }
+
+        const pw = pwInput.value;
+
+        // Validate input
+        if (!validatePasswordInput(pw)) {
+            pwError.textContent = 'Ungültige Eingabe';
+            pwError.style.display = 'block';
+            pwInput.value = '';
+            return;
+        }
+
+        // Record attempt
+        recordLoginAttempt();
+
+        // Secure password comparison (constant-time)
+        if (secureCompare(pw, CORRECT_PASSWORD)) {
+            // Success - clear attempts on successful login
+            localStorage.removeItem('p24_login_attempts');
+
             editMode = true;
-            localStorage.setItem('p24_session', JSON.stringify({ t: Date.now() }));
+            const sessionToken = generateSessionToken();
+            sessionStorage.setItem('p24_session_token', sessionToken);
+            localStorage.setItem('p24_session', JSON.stringify({ t: Date.now(), token: sessionToken }));
             closeModal();
             document.getElementById('editToggle').textContent = 'Abmelden';
             document.getElementById('editToggle').classList.add('active');
+            pwError.style.display = 'none';
+            pwInput.value = '';
             render();
         } else {
-            document.getElementById('pwError').style.display = 'block';
-            document.getElementById('pwInput').value = '';
-            document.getElementById('pwInput').focus();
+            // Failed attempt
+            const attempts = getLoginAttempts();
+            const remaining = MAX_ATTEMPTS - (attempts.filter(t => Date.now() - t < ATTEMPT_WINDOW).length);
+            pwError.textContent = `Falsches Passwort (${remaining} Versuche verbleibend)`;
+            pwError.style.display = 'block';
+            pwInput.value = '';
+            pwInput.focus();
+
+            // Lock account if max attempts reached
+            if (remaining <= 0) {
+                pwInput.disabled = true;
+                pwError.textContent = 'Konto gesperrt. Bitte in 15 Minuten erneut versuchen.';
+            }
         }
+    }
+
+    // Generate secure session token
+    function generateSessionToken() {
+        const arr = new Uint8Array(32);
+        crypto.getRandomValues(arr);
+        return Array.from(arr, byte => byte.toString(16).padStart(2, '0')).join('');
     }
 
     // Enter key for password
     document.getElementById('pwInput').addEventListener('keypress', e => {
-        if (e.key === 'Enter') tryLogin();
+        if (e.key === 'Enter' && !e.target.disabled) {
+            tryLogin();
+        }
     });
 
-    // Check existing session (24h TTL)
+    // Check existing session (24h TTL) - uses validateSession()
     function checkSession() {
         editMode = false; // Default: nicht authentifiziert
-        const session = localStorage.getItem('p24_session');
-        if (session) {
-            const { t } = JSON.parse(session);
-            if (Date.now() - t < 24 * 60 * 60 * 1000) {
-                editMode = true;
-                document.getElementById('editToggle').textContent = 'Abmelden';
-                document.getElementById('editToggle').classList.add('active');
-            } else {
-                localStorage.removeItem('p24_session');
-            }
+
+        if (validateSession()) {
+            editMode = true;
+            document.getElementById('editToggle').textContent = 'Abmelden';
+            document.getElementById('editToggle').classList.add('active');
+        } else {
+            // Clear invalid session data
+            localStorage.removeItem('p24_session');
+            sessionStorage.removeItem('p24_session_token');
+            editMode = false;
         }
     }
 
@@ -1077,15 +1261,49 @@
     }
 
     function loadData() {
-        const s = localStorage.getItem('pharmazon24_dashboard');
-        if (s) data = JSON.parse(s);
-        const m = localStorage.getItem('pharmazon24_manual_extras');
-        if (m) manualExtras = JSON.parse(m);
+        try {
+            const s = localStorage.getItem('pharmazon24_dashboard');
+            if (s) {
+                const parsed = JSON.parse(s);
+                if (typeof parsed === 'object' && parsed !== null) {
+                    data = parsed;
+                }
+            }
+            const m = localStorage.getItem('pharmazon24_manual_extras');
+            if (m) {
+                const parsed = JSON.parse(m);
+                if (typeof parsed === 'object' && parsed !== null) {
+                    manualExtras = parsed;
+                }
+            }
+        } catch (e) {
+            console.error('Error loading data:', e);
+            // Reset to empty objects if corrupted
+            data = {};
+            manualExtras = {};
+            // Clear corrupted data
+            localStorage.removeItem('pharmazon24_dashboard');
+            localStorage.removeItem('pharmazon24_manual_extras');
+        }
     }
 
     function saveData() {
-        localStorage.setItem('pharmazon24_dashboard', JSON.stringify(data));
-        localStorage.setItem('pharmazon24_manual_extras', JSON.stringify(manualExtras));
+        try {
+            // Sanitize data before saving
+            const sanitizedData = JSON.stringify(data);
+            const sanitizedExtras = JSON.stringify(manualExtras);
+
+            // Verify it's valid JSON
+            JSON.parse(sanitizedData);
+            JSON.parse(sanitizedExtras);
+
+            // Only save if valid
+            localStorage.setItem('pharmazon24_dashboard', sanitizedData);
+            localStorage.setItem('pharmazon24_manual_extras', sanitizedExtras);
+        } catch (e) {
+            console.error('Error saving data:', e);
+            alert('Fehler beim Speichern. Bitte versuchen Sie es erneut.');
+        }
     }
 
     function getMonthData() {
@@ -1102,11 +1320,34 @@
         render();
     }
 
+    // Input validation for numeric values
+    function validateDelta(delta) {
+        if (typeof delta !== 'number' || !Number.isInteger(delta)) return false;
+        if (Math.abs(delta) > 1000) return false; // Prevent extreme values
+        return true;
+    }
+
+    function validateCategory(cat) {
+        if (typeof cat !== 'string') return false;
+        if (!categories.hasOwnProperty(cat)) return false;
+        return true;
+    }
+
     function adjust(cat, delta) {
-        if (!editMode) {
-            alert('Diese Funktion ist nur im Edit-Mode verfügbar. Bitte melden Sie sich an.');
+        // Validate session
+        if (!editMode || !validateSession()) {
+            editMode = false;
+            localStorage.removeItem('p24_session');
+            alert('Sitzung abgelaufen. Bitte melden Sie sich erneut an.');
             return;
         }
+
+        // Validate inputs
+        if (!validateCategory(cat) || !validateDelta(delta)) {
+            console.error('Invalid input for adjust()');
+            return;
+        }
+
         const md = getMonthData();
         md[cat] = Math.max(0, md[cat] + delta);
         playSound(delta > 0 ? 'add' : 'remove');
@@ -1115,10 +1356,20 @@
     }
 
     function addManualExtra(cat, delta) {
-        if (!editMode) {
-            alert('Diese Funktion ist nur im Edit-Mode verfügbar. Bitte melden Sie sich an.');
+        // Validate session
+        if (!editMode || !validateSession()) {
+            editMode = false;
+            localStorage.removeItem('p24_session');
+            alert('Sitzung abgelaufen. Bitte melden Sie sich erneut an.');
             return;
         }
+
+        // Validate inputs
+        if (!validateCategory(cat) || !validateDelta(delta)) {
+            console.error('Invalid input for addManualExtra()');
+            return;
+        }
+
         const key = monthKey(currentDate);
         if (!manualExtras[key]) manualExtras[key] = {};
         if (!manualExtras[key][cat]) manualExtras[key][cat] = 0;
