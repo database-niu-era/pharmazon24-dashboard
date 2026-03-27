@@ -1915,12 +1915,14 @@
     }
 
     // ===== INIT =====
-    loadData();
-    loadFromRepository(); // Try to load data.json from repository (with cache-busting)
-    startAutoSync(); // Auto-check for updates every 30 seconds
-    checkSession();
-    preventIOSZoom();
-    render();
+    (async function initApp() {
+        loadData();
+        await loadFromRepository(); // Wait for repository data to load (with cache-busting)
+        startAutoSync(); // Auto-check for updates every 30 seconds
+        checkSession();
+        preventIOSZoom();
+        render(); // Only render AFTER repository data is loaded
+    })();
 </script>
 
 </body>
