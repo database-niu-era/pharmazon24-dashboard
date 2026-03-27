@@ -33,6 +33,12 @@
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        * {
+            box-sizing: border-box;
+            max-width: 100%;
         }
 
         /* Header */
@@ -491,60 +497,67 @@
             /* Header right buttons */
             .header-right {
                 width: 100%;
-                gap: 8px;
+                gap: 6px;
+                flex-wrap: wrap;
             }
 
             .month-selector {
                 flex: 1;
-                gap: 6px;
+                min-width: 0;
+                gap: 4px;
             }
 
             .month-selector button {
-                width: 32px;
-                height: 32px;
-                font-size: 1rem;
+                width: 30px;
+                height: 30px;
+                padding: 0;
+                font-size: 0.9rem;
             }
 
             #currentMonth {
-                font-size: 0.9rem;
+                font-size: 0.8rem;
                 min-width: auto;
                 flex: 1;
+                min-width: 0;
             }
 
             .header-btn {
-                padding: 10px 12px;
-                font-size: 0.8rem;
-                min-height: 40px;
+                padding: 8px 10px;
+                font-size: 0.75rem;
+                min-height: 36px;
+                flex: 0 1 auto;
             }
 
             /* Summary bar */
             .summary-bar {
-                padding: 12px 14px;
+                padding: 10px 12px;
                 grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
+                gap: 10px;
+                width: 100%;
             }
 
             .summary-card {
-                padding: 12px;
+                padding: 10px;
             }
 
             .summary-card .label {
-                font-size: 0.65rem;
+                font-size: 0.62rem;
             }
 
             .summary-card .value {
-                font-size: 1.4rem;
+                font-size: 1.3rem;
             }
 
             .summary-card .sub {
-                font-size: 0.7rem;
+                font-size: 0.68rem;
             }
 
             /* Dashboard */
             .dashboard {
-                padding: 0 14px 20px;
+                padding: 0 12px 16px;
                 grid-template-columns: 1fr;
-                gap: 12px;
+                gap: 10px;
+                width: 100%;
             }
 
             /* Card */
