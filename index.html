@@ -739,7 +739,9 @@
             <button onclick="changeMonth(1)">&#8250;</button>
         </div>
         <button class="header-btn" onclick="exportData()">Export</button>
-        <button class="header-btn" onclick="syncWithRepository()" title="Sync mit Repository">Sync</button>
+        <button class="header-btn" id="saveBtn" onclick="saveLocally()" title="Speichern" style="display:none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Speichern
+        </button>
         <button class="header-btn" id="editToggle" onclick="handleEditToggle()">Bearbeiten</button>
     </div>
 </header>
@@ -1250,6 +1252,7 @@
             sessionStorage.removeItem('p24_session_token');
             document.getElementById('editToggle').textContent = 'Bearbeiten';
             document.getElementById('editToggle').classList.remove('active');
+            document.getElementById('saveBtn').style.display = 'none';
             document.getElementById('pwInput').disabled = false;
             document.getElementById('pwError').textContent = 'Falsches Passwort';
             document.querySelectorAll('.btn-row').forEach(el => el.style.display = 'none');
@@ -1434,6 +1437,7 @@
             closeModal();
             document.getElementById('editToggle').textContent = 'Abmelden';
             document.getElementById('editToggle').classList.add('active');
+            document.getElementById('saveBtn').style.display = 'inline-flex';
             pwError.style.display = 'none';
             pwInput.value = '';
             render();
@@ -1476,6 +1480,7 @@
             editMode = true;
             document.getElementById('editToggle').textContent = 'Abmelden';
             document.getElementById('editToggle').classList.add('active');
+            document.getElementById('saveBtn').style.display = 'inline-flex';
         } else {
             // Clear invalid session data
             localStorage.removeItem('p24_session');
@@ -1857,21 +1862,17 @@
         }, 30000); // Check every 30 seconds
     }
 
-    // Export current data as JSON for manual git commit
-    function syncWithRepository() {
-        const md = getMonthData();
-        const exportObj = { ...md, lastUpdated: new Date().toISOString() };
-
-        const jsonStr = JSON.stringify(exportObj, null, 2);
-        const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'data.json';
-        a.click();
-        URL.revokeObjectURL(url);
-
-        alert('✅ data.json heruntergeladen!\n\nNächste Schritte:\n1. Die Datei ins pharmazon-dashboard Verzeichnis verschieben\n2. Terminal: git add data.json\n3. Terminal: git commit -m "Update data"\n4. Terminal: git push\n\nAndere Geräte: Seite neu laden!');
+    // Save current data locally
+    function saveLocally() {
+        saveData();
+        const btn = document.getElementById('saveBtn');
+        const original = btn.innerHTML;
+        btn.innerHTML = '✅ Gespeichert';
+        btn.disabled = true;
+        setTimeout(() => {
+            btn.innerHTML = original;
+            btn.disabled = false;
+        }, 2000);
     }
 
     // Import data from JSON file
