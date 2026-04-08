@@ -1583,6 +1583,7 @@
             // Only save if valid
             localStorage.setItem('pharmazon24_dashboard', sanitizedData);
             localStorage.setItem('pharmazon24_manual_extras', sanitizedExtras);
+            localStorage.setItem('p24_last_modified', Date.now());
         } catch (e) {
             console.error('Error saving data:', e);
             alert('Fehler beim Speichern. Bitte versuchen Sie es erneut.');
@@ -1795,7 +1796,7 @@
 
     let lastDataHash = null;
 
-    // Load data.json from repository with cache-busting
+    // Load data.json from repository — only if newer than local data
     async function loadFromRepository() {
         try {
             const timestamp = new Date().getTime();
@@ -1803,14 +1804,23 @@
             if (response.ok) {
                 const repoData = await response.json();
                 lastDataHash = JSON.stringify(repoData);
-                const md = getMonthData();
-                for (const cat in categories) {
-                    if (repoData[cat] !== undefined) {
-                        md[cat] = repoData[cat];
+
+                const localLastModified = parseInt(localStorage.getItem('p24_last_modified') || '0');
+                const repoLastUpdated = repoData.lastUpdated ? new Date(repoData.lastUpdated).getTime() : 0;
+
+                if (repoLastUpdated > localLastModified) {
+                    const md = getMonthData();
+                    for (const cat in categories) {
+                        if (repoData[cat] !== undefined) {
+                            md[cat] = repoData[cat];
+                        }
                     }
+                    saveData();
+                    localStorage.setItem('p24_last_modified', repoLastUpdated);
+                    console.log('✅ Repository-Daten geladen (neuer als lokal)');
+                } else {
+                    console.log('ℹ️ Lokale Daten sind aktueller – Repository ignoriert');
                 }
-                saveData();
-                console.log('✅ Daten aus Repository geladen');
             }
         } catch (err) {
             console.log('ℹ️ Kein data.json im Repository oder offline', err.message);
